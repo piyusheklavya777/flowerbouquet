@@ -1,0 +1,13 @@
+{
+    "bouquetId": "jkv-brw",
+    "name": "Peace Bouquet",
+    "flowers": [
+        {
+            "flowerId": "anjbi",
+            "quantity": 2 // quantity of the flower in this bouquet
+        }
+    ],
+    "isActive": true,
+    "creatorId": "fvew-qec",
+    "Description": "Peace Bouquet fits all occasions."
+}

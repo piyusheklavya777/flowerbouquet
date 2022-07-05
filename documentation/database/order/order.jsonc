@@ -1,0 +1,21 @@
+[
+    {
+        "bouquetId": "jkv-brw",
+        "name": "Peace Bouquet",
+        "status": "created / completed / expired",
+        "flowers": [
+            {
+                "flowerId": "anjbi",
+                "price": 20, // price is added here as the price may change after order is placed
+                "quantity": 2 // quantity of the flower in this order
+            },
+            {
+                "flowerId": "anjbhbi",
+                "price": 20,
+                "quantity": 2 
+            }
+        ],
+        "consumerId": "fvew-qec",
+        "price": 40
+    }
+]

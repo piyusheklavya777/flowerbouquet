@@ -1,0 +1,9 @@
+{
+    "flowerId": "anjbi",
+    "name": "Rose",
+    "price": 20,
+    "quantityAvailable": 100,
+    "isActive": true,
+    "vendorId": "vreqd",
+    "description": "Rose is an all seasons flower" // will not be replicated in other services
+}
