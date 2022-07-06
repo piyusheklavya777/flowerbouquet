@@ -1,6 +1,6 @@
 import Password from '../../utilities/password'
 describe('The password hashing library should behave as expected', () => {
-    let error;
+    let error: Error;
     beforeEach(() => {
         error = undefined;
     })
