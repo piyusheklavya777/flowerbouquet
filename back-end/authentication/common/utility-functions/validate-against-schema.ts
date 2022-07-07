@@ -1,6 +1,6 @@
 import logger from "../logger";
 import safeStringify from 'fast-safe-stringify'
-import { CustomError, GenericInternalError, RequestValidationFailedError } from "../errors";
+import { CustomError, GenericInternalError, RequestValidationFailedError, handleError } from "../index";
 
 export function validateAgainstJoiSchema(toValidate, schema ) {
     let validationResult
@@ -15,14 +15,7 @@ export function validateAgainstJoiSchema(toValidate, schema ) {
             throw new RequestValidationFailedError(errorMessage);
         }
     } catch (e) {
-        handleError(e);
+        handleError(e)
     }
     return validationResult;
-}
-
-export function handleError(e) {
-    if (e instanceof CustomError) {
-        throw e;
-    }
-    throw new GenericInternalError(e.message);
 }
