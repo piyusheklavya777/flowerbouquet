@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { convertExpressRequestObjectToStandard, setStandardResponseToExpress } from './helper';
 import { signupHttpHandler } from '../../packages/sign-up/http-adapter';
 import { signinHttpHandler } from '../../packages/sign-in/http-adapter';
+import { signoutHttpHandler } from '../../packages/sign-out/http-adapter';
 
 const app = express();
 app.set('trust proxy', true);
@@ -33,6 +34,12 @@ app.post(httpPathEnums.SIGN_UP, async (expressRequest: Request, expressResponse:
 app.post(httpPathEnums.SIGN_IN, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
   const standardResponse = await signinHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressResponse);
+});
+
+app.post(httpPathEnums.SIGN_OUT, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await signoutHttpHandler({ standardRequestObject });
   setStandardResponseToExpress(standardResponse, expressResponse);
 });
 

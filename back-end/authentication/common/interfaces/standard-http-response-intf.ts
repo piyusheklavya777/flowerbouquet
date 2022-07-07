@@ -3,4 +3,7 @@ export interface standardHttpResponseInterface {
     body?: {},
     session?: {},
     cookies?: {},
+    options?: {
+      unsetCookies?: string[],
+    }
   }

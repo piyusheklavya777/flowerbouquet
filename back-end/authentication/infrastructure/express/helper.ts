@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { Request, Response } from 'express';
 import logger from "../../common/logger";
+import { handleErrorAndConvertToJSON } from "../../common";
 
 export function convertExpressRequestObjectToStandard(request: Request) {
     logger.info('express request', request.params);
@@ -17,10 +18,19 @@ export function convertExpressRequestObjectToStandard(request: Request) {
 }
 
 export function setStandardResponseToExpress(standardResponse, expressResponseObject : Response) {
-    const cookiesToSet = _.get(standardResponse, ['cookies']);
-    if (cookiesToSet) {
-        logger.info('setting cookies');
-        _.map(Object.keys(cookiesToSet), k => expressResponseObject.cookie(k, cookiesToSet[k]));
+    try {
+        const cookiesToSet = _.get(standardResponse, ['cookies']);
+        if (cookiesToSet) {
+            logger.info('setting cookies');
+            _.map(Object.keys(cookiesToSet), k => expressResponseObject.cookie(k, cookiesToSet[k]));
+        }
+        const options = _.get(standardResponse, 'options');
+        if (options) {
+            _.map(options.unsetCookies, c => expressResponseObject.clearCookie(c));
+        }
+        expressResponseObject.status(standardResponse.httpCode).send(standardResponse.body);
+    } catch (e) {
+        handleErrorAndConvertToJSON(e);
     }
-    expressResponseObject.status(standardResponse.httpCode).send(standardResponse.body);
+
 }
