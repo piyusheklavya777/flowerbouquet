@@ -9,10 +9,10 @@ interface signupHandlerInterface {
   jwt: string;
 }
 
-export async function signupHandler (email: string, password : string): Promise<signupHandlerInterface> {
+export async function signupHandler (name: string, email: string, password : string): Promise<signupHandlerInterface> {
     let id: string; // primary index of user, created in the database
     let userJWT: string;
-    logger.info('POST /api/users/signup', { email, password });
+    logger.info('POST /api/users/signup', { name, email, password });
 
     await _checkIfUserAlreadyExists();
 
@@ -32,6 +32,7 @@ export async function signupHandler (email: string, password : string): Promise<
   
     async function _createNewUser() {
       const user = await User.build({
+        name,
         email,
         password,
       });

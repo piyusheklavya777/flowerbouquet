@@ -6,15 +6,13 @@ import Joi from 'joi';
 import { validateAgainstJoiSchema } from '../../common/utility-functions/validate-against-schema';
 
 export async function signupHttpHandler ({ standardRequestObject }) : Promise<standardHttpResponseInterface> {
-    let email: string;
-    let password: string;
     try {
         validateAgainstJoiSchema(standardRequestObject, signUpHttpRequestSchema);
-        email = _.get(standardRequestObject, ['body', 'email']);
-        password = _.get(standardRequestObject, ['body', 'password']);
-
-        const { id, jwt } = await signupHandler(email, password); 
-        return { httpCode: 201, body: { id, email }, cookies: { jwt }};
+        const email = _.get(standardRequestObject, ['body', 'email']);
+        const name = _.get(standardRequestObject, ['body', 'name']);
+        const password = _.get(standardRequestObject, ['body', 'password']);
+        const { jwt } = await signupHandler(name, email, password); 
+        return { httpCode: 201, body: { name, email }, cookies: { jwt }};
     } catch (e) {
        return _handleError(e);
     }
@@ -23,7 +21,8 @@ export async function signupHttpHandler ({ standardRequestObject }) : Promise<st
 const signUpHttpRequestSchema = Joi.object({
     body : Joi.object({
         email: Joi.string().email().required(),
-        password: Joi.string().min(3).max(20).required()
+        password: Joi.string().min(3).max(20).required(),
+        name: Joi.string().min(2).max(15).required(),
     })
 }).unknown();
 
