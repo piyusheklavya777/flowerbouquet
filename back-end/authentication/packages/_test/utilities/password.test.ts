@@ -1,4 +1,4 @@
-import Password from '../../utilities/password'
+import { Password } from '../../utilities/password'
 describe('The password hashing library should behave as expected', () => {
     let error: Error;
     beforeEach(() => {

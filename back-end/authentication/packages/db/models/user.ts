@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable no-param-reassign */
 import mongoose from 'mongoose';
-import Password from '../../utilities/password';
+import { Password } from '../../utilities/password';
 
 interface UserAttributes {
   email: string;
