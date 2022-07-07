@@ -3,7 +3,7 @@ import {body} from 'express-validator';
 import {CustomError} from '@eklavguild/common';
 import * as _ from 'lodash';
 import {checkExpressRequestObjectForErrors} from '../../utilities';
-import handler from './handler';
+import handler from '../../sign-up';
 
 const signUpRouter = Router();
 
