@@ -6,3 +6,4 @@ export * from './user-already-exists-error';
 export * from './request-validation-failed-error';
 export * from './user-not-found-error';
 export * from './user-not-logged-in-error';
+export * from './flower-already-exists-error';
