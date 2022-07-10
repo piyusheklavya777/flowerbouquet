@@ -14,8 +14,9 @@ app.set('trust proxy', true);
 app.use(json());
 app.use(
   cookieSession({
+    name: 'session',
     signed: false,
-    secure: process.env.NODE_ENV !== 'test',
+    secure: false,
   })
 );
 
@@ -28,19 +29,19 @@ export enum httpPathEnums {
 app.post(httpPathEnums.SIGN_UP, async (expressRequest: Request, expressResponse: Response) => {
     const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
     const standardResponse = await signupHttpHandler({ standardRequestObject });
-    setStandardResponseToExpress(standardResponse, expressResponse);
+    setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
 app.post(httpPathEnums.SIGN_IN, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
   const standardResponse = await signinHttpHandler({ standardRequestObject });
-  setStandardResponseToExpress(standardResponse, expressResponse);
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
 app.post(httpPathEnums.SIGN_OUT, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
   const standardResponse = await signoutHttpHandler({ standardRequestObject });
-  setStandardResponseToExpress(standardResponse, expressResponse);
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
 app.all('*', async (req, res) => {

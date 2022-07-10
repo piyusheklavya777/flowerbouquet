@@ -46,7 +46,7 @@ export async function signupHandler (name: string, email: string, password : str
         throw new Error('JWT TOKEN KEY Missing');
       }
       return jwt.sign({
-        id,
+        userId: id,
         email,
         name
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
