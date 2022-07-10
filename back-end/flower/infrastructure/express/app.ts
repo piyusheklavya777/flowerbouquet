@@ -4,6 +4,9 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { convertExpressRequestObjectToStandard, setStandardResponseToExpress } from './helper';
 import { createFlowerHttpHandler } from '../../packages/create/http-adapter';
+import { updateFlowerHttpHandler } from '../../packages/update/http-adapter';
+import { deleteFlowerHttpHandler } from '../../packages/delete/http-adapter';
+import { getFlowerHttpHandler } from '../../packages/get/http-adapter';
 
 const app = express();
 app.set('trust proxy', true);
@@ -22,7 +25,7 @@ enum httpPathEnums {
   UPDATE = '/api/flower/:flowerId',
   DELETE = '/api/flower/:flowerId',
   GET = '/api/flower/:flowerId',
-  GET_ALL = '/api/flower/:flowerId',
+  GET_ALL = '/api/flower/',
 }
 
 app.post(httpPathEnums.CREATE, async (expressRequest: Request, expressResponse: Response) => {
@@ -31,29 +34,29 @@ app.post(httpPathEnums.CREATE, async (expressRequest: Request, expressResponse: 
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
-// app.post(httpPathEnums.UPDATE, async (expressRequest: Request, expressResponse: Response) => {
-//   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-//   const standardResponse = await signinHttpHandler({ standardRequestObject });
-//    setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
-// });
+app.put(httpPathEnums.UPDATE, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await updateFlowerHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
 
-// app.post(httpPathEnums.DELETE, async (expressRequest: Request, expressResponse: Response) => {
-//   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-//   const standardResponse = await signoutHttpHandler({ standardRequestObject });
-//    setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
-// });
+app.delete(httpPathEnums.DELETE, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await deleteFlowerHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
 
-// app.post(httpPathEnums.GET, async (expressRequest: Request, expressResponse: Response) => {
-//   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-//   const standardResponse = await signoutHttpHandler({ standardRequestObject });
-//    setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
-// });
+app.get(httpPathEnums.GET, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await getFlowerHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
 
-// app.post(httpPathEnums.GET_ALL, async (expressRequest: Request, expressResponse: Response) => {
-//   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-//   const standardResponse = await signoutHttpHandler({ standardRequestObject });
-//   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
-// });
+app.get(httpPathEnums.GET_ALL, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await getFlowerHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
 
 app.all('*', async (req, res) => {
   res

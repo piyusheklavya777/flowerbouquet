@@ -31,7 +31,7 @@ export async function createFlower({
   return { flowerId: createdFlower.id };
 
   async function _checkUnique() {
-    if (await Flower.findOne({ name })) {
+    if (await Flower.findOne({ name, isActive: true })) {
       throw new FlowerAlreadyExistsError();
     }
   }
