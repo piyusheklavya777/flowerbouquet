@@ -9,6 +9,7 @@ interface FlowerAttributes {
   isActive: boolean;
   vendorId: string;
   description: string;
+  creatorName: string;
 }
 
 interface FlowerDoc extends mongoose.Document {
@@ -18,47 +19,54 @@ interface FlowerDoc extends mongoose.Document {
   isActive: boolean;
   vendorId: string;
   description: string;
+  creatorName: string;
 }
 
 interface FlowerModel extends mongoose.Model<FlowerDoc> {
   build(attrs: FlowerAttributes): FlowerDoc;
 }
 
-const flowerSchema = new mongoose.Schema({
-  price: {
-    type: Number,
-    required: true,
-  },
-  quantityAvailable: {
-    type: Number,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  isActive: {
-    type: Boolean,
-    required: true,
-    default: true,
-  },
-  vendorId: {
-    type: Boolean,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  }
-}, {
-  toJSON: {
-    transform(_, returnDocument) {
-
-      returnDocument.flowerId = returnDocument._id;
-      delete returnDocument._id;
+const flowerSchema = new mongoose.Schema(
+  {
+    price: {
+      type: Number,
+      required: true,
+    },
+    quantityAvailable: {
+      type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+    vendorId: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    creatorName: {
+      type: String,
+      required: true,
     },
   },
-});
+  {
+    toJSON: {
+      transform(_, returnDocument) {
+        returnDocument.id = returnDocument._id;
+        delete returnDocument._id;
+      },
+    },
+  },
+);
 
 flowerSchema.set('versionKey', 'version');
 
