@@ -1,10 +1,12 @@
 import { CustomError } from './custom-error';
 
 export class UserAlreadyExistsError extends CustomError {
-  
   httpCode = 401;
+
   errorCode = 'FB4011';
+
   name = 'UserAlreadyExistsError';
+
   description = 'User with same credentials alreeady exists';
 
   constructor() {
@@ -13,6 +15,6 @@ export class UserAlreadyExistsError extends CustomError {
   }
 
   toJSON() {
-    return { description: this.description, name: this.name, errorCode:  this.errorCode };
+    return { description: this.description, name: this.name, errorCode: this.errorCode };
   }
 }

@@ -1,10 +1,12 @@
 import { CustomError } from './custom-error';
 
 export class UserNotFoundError extends CustomError {
-  
   httpCode = 404;
+
   errorCode = 'FB4004';
+
   name = 'UserNotFoundError';
+
   description = 'Invalid login credentials';
 
   constructor() {
@@ -13,6 +15,6 @@ export class UserNotFoundError extends CustomError {
   }
 
   toJSON() {
-    return { description: this.description, name: this.name, errorCode:  this.errorCode };
+    return { description: this.description, name: this.name, errorCode: this.errorCode };
   }
 }

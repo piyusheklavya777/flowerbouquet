@@ -1,9 +1,9 @@
 export interface standardHttpResponseInterface {
-    httpCode: number,
-    body?: {},
-    session?: {},
-    cookies?: {},
-    options?: {
-      unsetCookies?: string[],
-    }
-  }
+  httpCode: number;
+  body?: Record<string, unknown>;
+  session?: Record<string, unknown>;
+  cookies?: Record<string, unknown>;
+  options?: {
+    unsetCookies?: string[];
+  };
+}

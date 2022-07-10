@@ -1,18 +1,19 @@
-
+/* eslint-disable no-console */
 import * as util from 'util';
 import _ from 'lodash';
 
 export default class Logger {
   context: {};
+
   constructor() {
     this.context = {};
   }
 
-  async info(message, obj = {}) {
+  async info(message: unknown, obj: unknown = {}) {
     console.log({ message, context: this.context, details: obj });
   }
 
-  async error(message, obj = {}) {
+  async error(message, obj: unknown = {}) {
     console.log('error', message, { context: this.context, details: obj });
   }
 

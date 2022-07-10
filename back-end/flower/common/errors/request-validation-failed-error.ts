@@ -1,12 +1,14 @@
 import { CustomError } from './custom-error';
 
 export class RequestValidationFailedError extends CustomError {
-
   httpCode = 400;
+
   errorCode = 'FB4003';
+
   name = 'RequestValidationFailedError';
+
   description;
-  
+
   constructor(message?: string) {
     super(message || 'Request format incorrect. Schema validation failed');
     this.description = message || 'Request format incorrect. Schema validation failed';
@@ -14,6 +16,6 @@ export class RequestValidationFailedError extends CustomError {
   }
 
   toJSON() {
-    return { description: this.description, name: this.name, errorCode:  this.errorCode };
+    return { description: this.description, name: this.name, errorCode: this.errorCode };
   }
 }

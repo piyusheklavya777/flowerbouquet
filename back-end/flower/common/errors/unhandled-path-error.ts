@@ -1,10 +1,12 @@
 import { CustomError } from './custom-error';
 
 export class UnhandledPathError extends CustomError {
-  
   httpCode = 400;
+
   errorCode = 'FB4001';
+
   name = 'UnhandledPathError';
+
   description = 'This request method and path combination is not supported';
 
   constructor() {
@@ -13,6 +15,6 @@ export class UnhandledPathError extends CustomError {
   }
 
   toJSON() {
-    return { description: this.description, name: this.name, errorCode:  this.errorCode };
+    return { description: this.description, name: this.name, errorCode: this.errorCode };
   }
 }
