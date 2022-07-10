@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flower-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flower-mongo
+  template:
+    metadata:
+      labels:
+        app: flower-mongo
+    spec:
+      containers:
+      - name: flower-mongo
+        image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flower-mongodb-service
+spec:
+  selector:
+    app: flower-mongo
+  ports:
+  - name: db
+    protocol: TCP
+    port: 27017
+    targetPort: 27017
+
