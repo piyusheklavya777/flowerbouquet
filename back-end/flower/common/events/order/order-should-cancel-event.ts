@@ -1,7 +1,7 @@
-import EventKey from '../event-keys';
+import { EventKeys } from '../../index';
 
 export interface OrderShouldCancelEvent {
-  subject: EventKey.ORDER_SHOULD_CANCEL;
+  subject: EventKeys.ORDER_SHOULD_CANCEL;
   data: {
     orderId: string;
   };

@@ -5,6 +5,7 @@ import { FlowerCreatedPublisher } from './publisher/flower-created-publisher';
 
 const sendFlowerCreatedEvent = async ({ flower }) => {
   try {
+    logger.info('publishing flower:created event');
     const { name, price, quantityAvailable, vendorId, flowerId } = flower;
     new FlowerCreatedPublisher(natsWrapper.client).publish({
       flowerId,

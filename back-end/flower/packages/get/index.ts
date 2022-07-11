@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
 import { Flower } from '../db/models/flower';
-import logger from '../../common/logger';
-import { FlowerNotFoundError } from '../../common';
+import { FlowerNotFoundError, logger } from '../../common';
 
 export async function getFlowers({ flowerId, namePrefix, userId }) {
   if (flowerId) return _singleGet({ flowerId, userId });

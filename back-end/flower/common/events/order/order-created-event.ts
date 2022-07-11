@@ -1,7 +1,7 @@
-import EventKey from '../event-keys';
+import { EventKeys } from '../../index';
 
 export interface OrderCreatedEvent {
-  subject: EventKey.ORDER_CREATED;
+  subject: EventKeys.ORDER_CREATED;
   data: {
     orderId: string;
     status: string;

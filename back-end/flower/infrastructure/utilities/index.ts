@@ -1,5 +1,6 @@
 // import mongoose from "mongoose";
 import mongoose from 'mongoose';
+import _ from 'lodash';
 import { DatabaseConnectionError } from '../../common/errors/database-connection-error';
 import { GenericInternalError, logger } from '../../common';
 import { natsWrapper } from '../../nats-singleton';
@@ -59,7 +60,7 @@ async function _connectToEventBus() {
     process.on('SIGTERM', () => natsWrapper.client.close());
   } catch (e) {
     logger.error('error while trying to connect to the event bus', e);
-    throw new GenericInternalError(e.message);
+    throw new GenericInternalError(_.get(e, 'message'));
   }
 }
 

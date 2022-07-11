@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
-import logger from '../../common/logger';
-import { handleErrorAndConvertToJSON } from '../../common/index';
+import { handleErrorAndConvertToJSON, logger } from '../../common/index';
 
 export function convertExpressRequestObjectToStandard(request: Request) {
   const queryStringParameters = request.query;

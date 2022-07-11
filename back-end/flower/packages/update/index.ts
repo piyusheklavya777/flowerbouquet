@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { Flower } from '../db/models/flower';
-import logger from '../../common/logger';
-import { FlowerNotFoundError } from '../../common';
+import { FlowerNotFoundError, logger } from '../../common';
 
 export async function updateFlower({ flowerId, name, price, quantityAvailable, description, vendorId }) {
   const compactAttributes = _.omitBy(

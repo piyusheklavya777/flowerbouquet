@@ -1,6 +1,6 @@
 import * as JWT from 'jsonwebtoken';
 import { UserNotLoggedInError, handleError } from '../index';
-import logger from '../logger';
+import { logger } from '../logger';
 
 interface currentUserDetailsIntf {
   email: string;

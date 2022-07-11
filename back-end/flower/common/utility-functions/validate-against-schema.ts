@@ -1,5 +1,5 @@
 import safeStringify from 'fast-safe-stringify';
-import logger from '../logger';
+import { logger } from '../logger';
 import { RequestValidationFailedError, handleError } from '../index';
 
 export function validateAgainstJoiSchema(toValidate, schema) {

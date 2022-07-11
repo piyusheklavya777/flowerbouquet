@@ -1,5 +1,5 @@
 import { Flower } from '../db/models/flower';
-import logger from '../../common/logger';
+import { logger } from '../../common/logger';
 import { FlowerNotFoundError } from '../../common';
 
 export async function deleteFlower({ flowerId, vendorId }) {
