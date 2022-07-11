@@ -6,7 +6,7 @@ export interface FlowerUpdatedEvent {
     flowerId: string;
     name?: string;
     price?: number;
-    quantityChange?: number;
+    quantityAvailable?: number;
     description?: string;
   };
 }

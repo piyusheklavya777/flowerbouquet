@@ -5,7 +5,7 @@ import { FlowerCreatedPublisher, FlowerUpdatedPublisher, FlowerDeletedPublisher 
 
 const sendFlowerCreatedEvent = async ({ flower }) => {
   try {
-    logger.info('publishing flower:created event');
+    logger.info('publishing flower:created event for flower', flower);
     const { name, price, quantityAvailable, vendorId, flowerId } = flower;
     new FlowerCreatedPublisher(natsWrapper.client).publish({
       flowerId,
@@ -23,13 +23,13 @@ const sendFlowerCreatedEvent = async ({ flower }) => {
 
 const sendFlowerUpdatedEvent = async ({ flower }) => {
   try {
-    logger.info('publishing flower:updated event');
-    const { name, price, quantityChange, flowerId, description } = flower;
+    logger.info('publishing flower:updated event for flower', flower);
+    const { name, price, quantityAvailable, flowerId, description } = flower;
     new FlowerUpdatedPublisher(natsWrapper.client).publish({
       flowerId,
       name,
       price,
-      quantityChange,
+      quantityAvailable,
       description,
     });
   } catch (e) {
@@ -38,10 +38,9 @@ const sendFlowerUpdatedEvent = async ({ flower }) => {
   }
 };
 
-const sendFlowerDeletedEvent = async ({ flower }) => {
+const sendFlowerDeletedEvent = async ({ flowerId }) => {
   try {
-    logger.info('publishing flower:deleted event');
-    const { flowerId } = flower;
+    logger.info(`publishing flower:deleted event flowerId: ${flowerId}`);
     new FlowerDeletedPublisher(natsWrapper.client).publish({
       flowerId,
     });

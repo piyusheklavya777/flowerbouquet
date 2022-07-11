@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { Flower } from '../db/models/flower';
 import { FlowerNotFoundError, logger } from '../../common';
+import { sendFlowerUpdatedEvent } from '../events';
 
 export async function updateFlower({ flowerId, name, price, quantityAdded, description, vendorId }) {
   let compactAttributes = _.omitBy(
@@ -29,6 +30,8 @@ export async function updateFlower({ flowerId, name, price, quantityAdded, descr
     throw new FlowerNotFoundError();
   }
   logger.info(`Flower updated`, updatedFlower);
+
+  await sendFlowerUpdatedEvent({ flower: updatedFlower });
 
   return updatedFlower;
 }
