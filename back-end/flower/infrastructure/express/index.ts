@@ -1,5 +1,5 @@
 import logger from '../../common/logger';
-import { applicationInitialize } from '../_utilities';
+import { applicationInitialize } from '../utilities';
 import { app } from './app';
 
 const startup = async () => {
