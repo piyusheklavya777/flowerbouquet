@@ -17,4 +17,4 @@ enum EventKeys {
   ORDER_SHOULD_CANCEL = 'order:expiretime',
 }
 
-export default EventKeys;
+export { EventKeys };

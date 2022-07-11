@@ -1,12 +1,13 @@
-import EventKey from '../event-keys';
+import { EventKeys } from '../../index';
 
 export interface FlowerCreatedEvent {
-  subject: EventKey.FLOWER_CREATED;
+  subject: EventKeys.FLOWER_CREATED;
   data: {
     flowerId: string;
     name: string;
     price: number;
     quantityAvailable: number;
     vendorId: string;
+    isActive: boolean;
   };
 }

@@ -1,7 +1,7 @@
-import EventKey from '../event-keys';
+import { EventKeys } from '../../index';
 
 export interface BouquetUpdateddEvent {
-  subject: EventKey.BOUQUET_UPDATED;
+  subject: EventKeys.BOUQUET_UPDATED;
   data: {
     bouquetId: string;
     name?: string;

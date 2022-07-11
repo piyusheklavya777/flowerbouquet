@@ -1,7 +1,7 @@
-import EventKey from '../event-keys';
+import { EventKeys } from '../../index';
 
 export interface FlowerDeletedEvent {
-  subject: EventKey.FLOWER_DELETED;
+  subject: EventKeys.FLOWER_DELETED;
   data: {
     flowerId: string;
   };
