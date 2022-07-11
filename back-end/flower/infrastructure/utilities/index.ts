@@ -1,12 +1,14 @@
 // import mongoose from "mongoose";
 import mongoose from 'mongoose';
 import { DatabaseConnectionError } from '../../common/errors/database-connection-error';
-import { logger } from '../../common';
+import { GenericInternalError, logger } from '../../common';
+import { natsWrapper } from '../../nats-singleton';
 
 async function applicationInitialize() {
   try {
     _verifyEnviroment();
     await _connectToDatabase();
+    await _connectToEventBus();
     logger.info('application initialized');
   } catch (error: unknown) {
     logger.error('Application initilizing failed with following error', { error });
@@ -17,14 +19,14 @@ async function applicationInitialize() {
 function _verifyEnviroment() {
   if (!process.env.JWT_KEY) {
     logger.error('JWT_KEY must be defined');
-    throw new Error('JWT_KEY must be defined');
-  }
-  if (!process.env.MONGO_URI) {
-    throw new Error('MONGO_URI must be defined');
+    throw new GenericInternalError('JWT_KEY must be defined');
   }
 }
 
 async function _connectToDatabase() {
+  if (!process.env.MONGO_URI) {
+    throw new GenericInternalError('MONGO_URI must be defined');
+  }
   try {
     logger.info('connecting to mongoose client');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -33,6 +35,31 @@ async function _connectToDatabase() {
   } catch (error) {
     logger.error('Failed connecting to mongoose', { error });
     throw new DatabaseConnectionError();
+  }
+}
+
+async function _connectToEventBus() {
+  if (!process.env.NATS_CLIENT_ID) {
+    throw new GenericInternalError('NATS_CLIENT_ID must be defined');
+  }
+  if (!process.env.NATS_URL) {
+    throw new GenericInternalError('NATS_URL must be defined');
+  }
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new GenericInternalError('NATS_CLUSTER_ID must be defined');
+  }
+  try {
+    logger.info('trying to connect to the event bus');
+    await natsWrapper.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL);
+    natsWrapper.client.on('close', () => {
+      logger.info('NATS connection closed!');
+      process.exit();
+    });
+    process.on('SIGINT', () => natsWrapper.client.close());
+    process.on('SIGTERM', () => natsWrapper.client.close());
+  } catch (e) {
+    logger.error('error while trying to connect to the event bus', e);
+    throw new GenericInternalError(e.message);
   }
 }
 
