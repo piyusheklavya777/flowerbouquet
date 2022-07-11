@@ -8,3 +8,5 @@ export * from './user-not-found-error';
 export * from './user-not-logged-in-error';
 export * from './flower-already-exists-error';
 export * from './flower-not-found-error';
+export * from './event-publishing-error';
+export * from './event-listening-error';
