@@ -12,7 +12,7 @@ export async function updateFlowerHttpHandler({ standardRequestObject }): Promis
 
     const { userId } = getCurrentUser(standardRequestObject.session);
 
-    const { name, price, quantityAvailable, description } = _.get(standardRequestObject, 'body');
+    const { name, price, quantityAdded, description } = _.get(standardRequestObject, 'body');
 
     const flowerId = _.get(standardRequestObject, ['queryParameters', 'flowerId']);
 
@@ -21,7 +21,7 @@ export async function updateFlowerHttpHandler({ standardRequestObject }): Promis
       vendorId: userId,
       name,
       price,
-      quantityAvailable,
+      quantityAdded,
       description,
     });
     return {
@@ -36,8 +36,8 @@ export async function updateFlowerHttpHandler({ standardRequestObject }): Promis
 const flowerUpdateHttpRequestSchema = Joi.object({
   body: Joi.object({
     name: Joi.string().min(2).max(100),
-    price: Joi.number().min(0).max(1000).required(),
-    quantityAvailable: Joi.number().min(1).max(10000),
+    price: Joi.number().min(0).max(1000),
+    quantityAdded: Joi.number().min(1).max(10000),
     description: Joi.string(),
   }).required(),
   queryParameters: Joi.object({

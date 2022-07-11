@@ -4,8 +4,9 @@ export interface FlowerUpdatedEvent {
   subject: EventKeys.FLOWER_UPDATED;
   data: {
     flowerId: string;
-    name: string;
-    price: number;
-    quantityChange: number;
+    name?: string;
+    price?: number;
+    quantityChange?: number;
+    description?: string;
   };
 }
