@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="z9EzCmLXQSxuZ-4Axso4" name="Page-1">
-        <mxGraphModel dx="1382" dy="2215" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="726" dy="2019" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -98,13 +98,13 @@
                         <mxPoint x="840" y="-380" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="CZBQ9HR7Dfr9N-4URWu_-27" value="subject: &quot;flower:created&quot;,&lt;br&gt;data: {&lt;br&gt;flowerId: &quot;ecig-3nw9&quot;,&lt;br&gt;&quot;name&quot;: &quot;Tulips&quot;,&lt;br&gt;price: 20,&lt;br&gt;quantity: 100,&lt;br&gt;isActive: true&lt;br&gt;}" style="shape=card;whiteSpace=wrap;html=1;fontSize=18;" parent="1" vertex="1">
-                    <mxGeometry x="960" y="-1134" width="280" height="180" as="geometry"/>
+                <mxCell id="CZBQ9HR7Dfr9N-4URWu_-27" value="subject: &quot;flower:created&quot;,&lt;br&gt;data: {&lt;br&gt;flowerId: &quot;ecig-3nw9&quot;,&lt;br&gt;&quot;name&quot;: &quot;Tulips&quot;,&lt;br&gt;price: 20,&lt;br&gt;quantity: 100,&lt;br&gt;isActive: true,&lt;br&gt;vendorId: c4d-y6u&lt;br&gt;}" style="shape=card;whiteSpace=wrap;html=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="-1134" width="280" height="204" as="geometry"/>
                 </mxCell>
-                <mxCell id="2" value="flower:created" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="2" value="flower:created" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="1080" y="-793" width="60" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="3" value="flower:created" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="3" value="flower:created" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="1080" y="-493" width="60" height="30" as="geometry"/>
                 </mxCell>
             </root>
