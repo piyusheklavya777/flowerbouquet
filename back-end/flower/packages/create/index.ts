@@ -1,6 +1,7 @@
 import { Flower } from '../db/models/flower';
-import logger from '../../common/logger';
+import { logger } from '../../common/logger';
 import { FlowerAlreadyExistsError } from '../../common';
+import { sendFlowerCreatedEvent } from '../events';
 
 export async function createFlower({
   name,
@@ -27,6 +28,8 @@ export async function createFlower({
   await createdFlower.save();
 
   logger.info('New flower created', createdFlower.toObject());
+
+  await sendFlowerCreatedEvent({ flower: createdFlower });
 
   return { flowerId: createdFlower.id };
 

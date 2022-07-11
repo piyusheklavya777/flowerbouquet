@@ -1,7 +1,7 @@
 // import mongoose from "mongoose";
 import mongoose from 'mongoose';
 import { DatabaseConnectionError } from '../../common/errors/database-connection-error';
-import logger from '../../common/logger';
+import { logger } from '../../common';
 
 async function applicationInitialize() {
   try {
@@ -27,6 +27,7 @@ function _verifyEnviroment() {
 async function _connectToDatabase() {
   try {
     logger.info('connecting to mongoose client');
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await mongoose.connect(process.env.MONGO_URI!);
     logger.info('Succesfully connected to database !!');
   } catch (error) {

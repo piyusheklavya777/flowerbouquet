@@ -1,9 +1,9 @@
 import { Stan } from 'node-nats-streaming';
-import logger from '../logger';
-import Subjects from './event-keys';
+import { logger } from '../index';
+import { EventKeys } from './event-keys';
 
 interface Event {
-  subject: Subjects;
+  subject: EventKeys;
   data: unknown;
 }
 
