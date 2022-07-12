@@ -8,20 +8,7 @@ export async function createFlower({ name, price, quantityAvailable }): Promise<
 
   await _checkUnique();
 
-  const createdFlower = Flower.build({
-    name,
-    price,
-    quantityAvailable,
-    isActive: true,
-  });
-
-  await createdFlower.save();
-
-  logger.info('New flower created', createdFlower.toObject());
-
-  await sendFlowerCreatedEvent({ flower: createdFlower });
-
-  return { flowerId: createdFlower.id };
+  return { flowerId: 'lol' };
 
   async function _checkUnique() {
     if (await Flower.findOne({ name, isActive: true })) {

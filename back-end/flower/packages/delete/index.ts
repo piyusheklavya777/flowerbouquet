@@ -15,7 +15,7 @@ export async function deleteFlower({ flowerId, vendorId }) {
     throw new FlowerNotFoundError();
   }
 
-  await sendFlowerDeletedEvent({ flowerId: updatedFlower.id });
+  await sendFlowerDeletedEvent({ flowerId: updatedFlower._id });
 
   logger.info(`Flower deleted`, updatedFlower);
 }

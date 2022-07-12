@@ -7,6 +7,7 @@ interface FlowerAttributes {
   price: string;
   quantityAvailable: string;
   isActive: boolean;
+  flowerId: string;
 }
 
 interface FlowerDoc extends mongoose.Document {
@@ -52,7 +53,15 @@ const flowerSchema = new mongoose.Schema(
 
 flowerSchema.set('versionKey', 'version');
 
-flowerSchema.statics.build = (attrs: FlowerAttributes) => new Flower(attrs);
+flowerSchema.statics.build = (attrs: FlowerAttributes) =>
+  new Flower({
+    ...attrs,
+    _id: attrs.flowerId,
+  });
+
+flowerSchema.virtual('flowerId').get(function () {
+  return this._id;
+});
 
 const Flower = mongoose.model<FlowerDoc, FlowerModel>('Flower', flowerSchema);
 
