@@ -7,9 +7,6 @@ interface FlowerAttributes {
   price: string;
   quantityAvailable: string;
   isActive: boolean;
-  vendorId: string;
-  description: string;
-  creatorName: string;
 }
 
 interface FlowerDoc extends mongoose.Document {
@@ -17,9 +14,6 @@ interface FlowerDoc extends mongoose.Document {
   price: string;
   quantityAvailable: string;
   isActive: boolean;
-  vendorId: string;
-  description: string;
-  creatorName: string;
 }
 
 interface FlowerModel extends mongoose.Model<FlowerDoc> {
@@ -44,18 +38,6 @@ const flowerSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
       default: true,
-    },
-    vendorId: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    creatorName: {
-      type: String,
-      required: true,
     },
   },
   {
