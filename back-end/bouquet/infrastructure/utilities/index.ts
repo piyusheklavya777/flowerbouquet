@@ -4,12 +4,14 @@ import _ from 'lodash';
 import { DatabaseConnectionError } from '../../common/errors/database-connection-error';
 import { GenericInternalError, logger } from '../../common';
 import { natsWrapper } from '../../nats-singleton';
+import { FlowerCreatedListener } from '../events/flower-created-listener';
 
 async function applicationInitialize() {
   try {
     _verifyEnviroment();
     await _connectToDatabase();
     await _connectToEventBus();
+    await _startListeningToEvents();
     logger.info('application initialized');
   } catch (error: unknown) {
     logger.error('Application initilizing failed with following error', { error });
@@ -62,6 +64,12 @@ async function _connectToEventBus() {
     logger.error('error while trying to connect to the event bus', e);
     throw new GenericInternalError(_.get(e, 'message'));
   }
+}
+
+async function _startListeningToEvents() {
+  new FlowerCreatedListener(natsWrapper.client).listen();
+  // new FlowerUpdatedListener(natsWrapper.client).listen();
+  // new FlowerDeletedListener(natsWrapper.client).listen();
 }
 
 export { applicationInitialize };
