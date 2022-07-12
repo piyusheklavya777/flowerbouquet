@@ -1,6 +1,6 @@
 import { EventKeys } from '../../index';
 
-export interface BouquetUpdateddEvent {
+export interface BouquetUpdatedEvent {
   subject: EventKeys.BOUQUET_UPDATED;
   data: {
     bouquetId: string;
