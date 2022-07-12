@@ -5,16 +5,17 @@ import { FlowerCreatedPublisher, FlowerUpdatedPublisher, FlowerDeletedPublisher 
 
 const sendFlowerCreatedEvent = async ({ flower }) => {
   try {
-    logger.info('publishing flower:created event for flower', flower);
-    const { name, price, quantityAvailable, vendorId, flowerId } = flower;
-    new FlowerCreatedPublisher(natsWrapper.client).publish({
+    const { name, price, quantityAvailable, vendorId, id: flowerId } = flower;
+    const payload = {
       flowerId,
       name,
       price,
       quantityAvailable,
       vendorId,
       isActive: true,
-    });
+    };
+    logger.info('publishing flower:created event for flower', payload);
+    new FlowerCreatedPublisher(natsWrapper.client).publish(payload);
   } catch (e) {
     logger.error('Error occurred while publishing flower created event');
     throw new EventListeningError(_.get(e, 'messsage'));
@@ -23,15 +24,16 @@ const sendFlowerCreatedEvent = async ({ flower }) => {
 
 const sendFlowerUpdatedEvent = async ({ flower }) => {
   try {
-    logger.info('publishing flower:updated event for flower', flower);
-    const { name, price, quantityAvailable, flowerId, description } = flower;
-    new FlowerUpdatedPublisher(natsWrapper.client).publish({
+    const { name, price, quantityAvailable, _id: flowerId, description } = flower;
+    const payload = {
       flowerId,
       name,
       price,
       quantityAvailable,
       description,
-    });
+    };
+    logger.info('publishing flower:updated event for flower', payload);
+    new FlowerUpdatedPublisher(natsWrapper.client).publish(payload);
   } catch (e) {
     logger.error('Error occurred while publishing flower updated event');
     throw new EventListeningError(_.get(e, 'messsage'));
