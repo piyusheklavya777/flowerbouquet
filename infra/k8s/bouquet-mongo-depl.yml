@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bouquet-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bouquet-mongo
+  template:
+    metadata:
+      labels:
+        app: bouquet-mongo
+    spec:
+      containers:
+      - name: bouquet-mongo
+        image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bouquet-mongodb-service
+spec:
+  selector:
+    app: bouquet-mongo
+  ports:
+  - name: db
+    protocol: TCP
+    port: 27017
+    targetPort: 27017
+
