@@ -7,7 +7,7 @@
     "plugins": ["@typescript-eslint"],
     "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     "rules": {
-  
+      "class-methods-use-this": "off"
     },
     "env": {
       "browser": true,

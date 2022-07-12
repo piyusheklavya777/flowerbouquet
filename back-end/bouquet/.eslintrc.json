@@ -37,7 +37,8 @@
       "no-use-before-define": "off",
       "import/export": "off",
       "import/no-cycle": "off",
-      "no-underscore-dangle": "off"
+      "no-underscore-dangle": "off",
+      "class-methods-use-this": "off"
     },
     "overrides": [
         {
