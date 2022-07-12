@@ -5,7 +5,7 @@ import { BouquetCreatedPublisher, BouquetUpdatedPublisher, BouquetDeletedPublish
 
 const sendBouquetCreatedEvent = async ({ bouquet }) => {
   try {
-    const { name, discount, flowers, id: bouquetId } = bouquet;
+    const { name, discount, flowers, _id: bouquetId } = bouquet;
     const payload = {
       bouquetId,
       name,
