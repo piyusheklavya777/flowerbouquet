@@ -3,14 +3,7 @@ import { logger } from '../../common/logger';
 import { FlowerAlreadyExistsError } from '../../common';
 import { sendFlowerCreatedEvent } from '../events';
 
-export async function createFlower({
-  name,
-  price,
-  quantityAvailable,
-  vendorId,
-  description,
-  creatorName,
-}): Promise<{ flowerId: string }> {
+export async function createFlower({ name, price, quantityAvailable }): Promise<{ flowerId: string }> {
   logger.info('POST /api/flower');
 
   await _checkUnique();
@@ -19,9 +12,6 @@ export async function createFlower({
     name,
     price,
     quantityAvailable,
-    vendorId,
-    description,
-    creatorName,
     isActive: true,
   });
 

@@ -18,9 +18,6 @@ export async function createFlowerHttpHandler({ standardRequestObject }): Promis
       name,
       price,
       quantityAvailable,
-      vendorId: userId,
-      description,
-      creatorName: currentUserName,
     });
     return {
       httpCode: 200,
