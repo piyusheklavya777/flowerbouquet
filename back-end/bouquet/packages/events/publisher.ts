@@ -1,13 +1,13 @@
 /* eslint-disable max-classes-per-file */
-import { FlowerCreatedEvent, FlowerUpdatedEvent, Publisher, EventKeys, FlowerDeletedEvent } from '../../common';
+import { BouquetCreatedEvent, BouquetUpdatedEvent, Publisher, EventKeys, BouquetDeletedEvent } from '../../common';
 
-export class FlowerCreatedPublisher extends Publisher<FlowerCreatedEvent> {
-  subject: EventKeys.FLOWER_CREATED = EventKeys.FLOWER_CREATED;
+export class BouquetCreatedPublisher extends Publisher<BouquetCreatedEvent> {
+  subject: EventKeys.BOUQUET_CREATED = EventKeys.BOUQUET_CREATED;
 }
-export class FlowerUpdatedPublisher extends Publisher<FlowerUpdatedEvent> {
-  subject: EventKeys.FLOWER_UPDATED = EventKeys.FLOWER_UPDATED;
+export class BouquetUpdatedPublisher extends Publisher<BouquetUpdatedEvent> {
+  subject: EventKeys.BOUQUET_UPDATED = EventKeys.BOUQUET_UPDATED;
 }
 
-export class FlowerDeletedPublisher extends Publisher<FlowerDeletedEvent> {
-  subject: EventKeys.FLOWER_DELETED = EventKeys.FLOWER_DELETED;
+export class BouquetDeletedPublisher extends Publisher<BouquetDeletedEvent> {
+  subject: EventKeys.BOUQUET_DELETED = EventKeys.BOUQUET_DELETED;
 }
