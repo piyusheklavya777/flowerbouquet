@@ -5,6 +5,8 @@ import { DatabaseConnectionError } from '../../common/errors/database-connection
 import { GenericInternalError, logger } from '../../common';
 import { natsWrapper } from '../../nats-singleton';
 import { FlowerCreatedListener } from '../events/flower-created-listener';
+import { FlowerUpdatedListener } from '../events/flower-updated-listener';
+import { FlowerDeletedListener } from '../events/flower-deleted-listener';
 
 async function applicationInitialize() {
   try {
@@ -68,8 +70,8 @@ async function _connectToEventBus() {
 
 async function _startListeningToEvents() {
   new FlowerCreatedListener(natsWrapper.client).listen();
-  // new FlowerUpdatedListener(natsWrapper.client).listen();
-  // new FlowerDeletedListener(natsWrapper.client).listen();
+  new FlowerUpdatedListener(natsWrapper.client).listen();
+  new FlowerDeletedListener(natsWrapper.client).listen();
 }
 
 export { applicationInitialize };
