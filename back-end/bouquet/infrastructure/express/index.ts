@@ -2,10 +2,10 @@ import { logger } from '../../common/logger';
 import { applicationInitialize } from '../utilities';
 import { app } from './app';
 
-const startup = async () => {
+const startExpressApp = async () => {
   await applicationInitialize();
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => logger.info(`FLOWER SERVICE live on port ${PORT}`));
+  app.listen(PORT, () => logger.info(`BOUQUET SERVICE live on port ${PORT}`));
 };
 
-startup();
+startExpressApp();
