@@ -72,6 +72,10 @@ flowerSchema.set('versionKey', 'version');
 
 flowerSchema.statics.build = (attrs: FlowerAttributes) => new Flower(attrs);
 
+flowerSchema.virtual('flowerId').get(function () {
+  return this._id;
+});
+
 const Flower = mongoose.model<FlowerDoc, FlowerModel>('Flower', flowerSchema);
 
 export { Flower };
