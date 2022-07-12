@@ -7,6 +7,7 @@ interface BouquetAttributes {
   discount: number;
   isActive: boolean;
   creatorId: string;
+  creatorName: string;
   description: string;
   flowers: {
     flowerId: string;
@@ -45,6 +46,10 @@ const bouquetSchema = new mongoose.Schema(
       default: true,
     },
     creatorId: {
+      type: String,
+      required: true,
+    },
+    creatorName: {
       type: String,
       required: true,
     },
