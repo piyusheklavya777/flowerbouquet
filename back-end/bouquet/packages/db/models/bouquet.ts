@@ -81,4 +81,4 @@ bouquetSchema.statics.build = (attrs: BouquetAttributes) => new Bouquet(attrs);
 
 const Bouquet = mongoose.model<BouquetDoc, BouquetModel>('Bouquet', bouquetSchema);
 
-export { Bouquet};
+export { Bouquet };
