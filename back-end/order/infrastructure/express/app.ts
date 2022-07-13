@@ -3,8 +3,8 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { convertExpressRequestObjectToStandard, setStandardResponseToExpress } from './helper';
-// import { createOrderHttpHandler } from '../../packages/create/http-adapter';
-// import { deleteOrderHttpHandler } from '../../packages/delete/http-adapter';
+import { createOrderHttpHandler } from '../../packages/order/create/http-adapter';
+import { deleteOrderHttpHandler } from '../../packages/order/delete/http-adapter';
 import { getFlowerHttpHandler } from '../../packages/flower/get/http-adapter';
 import { getBouquetHttpHandler } from '../../packages/bouquet/get/http-adapter';
 
@@ -56,18 +56,18 @@ app.get(httpPathEnums.GET_ALL_BOUQUETS, async (expressRequest: Request, expressR
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
-// // orders api
-// app.post(httpPathEnums.CREATE_ORDER, async (expressRequest: Request, expressResponse: Response) => {
-//   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-//   const standardResponse = await createOrderHttpHandler({ standardRequestObject });
-//   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
-// });
+// orders api
+app.post(httpPathEnums.CREATE_ORDER, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await createOrderHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
 
-// app.delete(httpPathEnums.DELETE_ORDER, async (expressRequest: Request, expressResponse: Response) => {
-//   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-//   const standardResponse = await deleteOrderHttpHandler({ standardRequestObject });
-//   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
-// });
+app.delete(httpPathEnums.DELETE_ORDER, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await deleteOrderHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
 
 // app.get(httpPathEnums.GET_ORDER, async (expressRequest: Request, expressResponse: Response) => {
 //   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
