@@ -11,3 +11,4 @@ export * from './flower-not-found-error';
 export * from './event-publishing-error';
 export * from './event-listening-error';
 export * from './bouquet-already-exists-error';
+export * from './bouquet-not-found-error';
