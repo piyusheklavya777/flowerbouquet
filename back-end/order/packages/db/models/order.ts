@@ -7,6 +7,7 @@ interface OrderAttributes {
   isActive: boolean;
   customerId: string;
   status: string;
+  customerName: string;
   bouquets: {
     bouquetId: string;
     discount: number;
@@ -23,6 +24,7 @@ interface OrderAttributes {
 interface OrderDoc extends mongoose.Document {
   isActive: boolean;
   customerId: string;
+  customerName: string;
   status: string;
   bouquets: {
     bouquetId: string;
@@ -111,6 +113,6 @@ orderSchema.set('versionKey', 'version');
 
 orderSchema.statics.build = (attrs: OrderAttributes) => new Order(attrs);
 
-const Order = mongoose.model<OrderDoc, OrderModel>('Bouquet', orderSchema);
+const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
 
 export { Order };
