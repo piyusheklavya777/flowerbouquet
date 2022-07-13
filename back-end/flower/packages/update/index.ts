@@ -3,12 +3,13 @@ import { Flower } from '../db/models/flower';
 import { FlowerNotFoundError, logger } from '../../common';
 import { sendFlowerUpdatedEvent } from '../events';
 
-export async function updateFlower({ flowerId, name, price, quantityAdded, description, vendorId }) {
+export async function updateFlower(attrs) {
+  const { flowerId, name, price, quantityAdded, description, vendorId, invokeType = 'http' } = attrs;
   let compactAttributes = _.omitBy(
     {
       name,
       price,
-      quantityAdded,
+      quantityAdded: parseInt(quantityAdded, 10),
       description,
     },
     _.isNil,
@@ -21,9 +22,16 @@ export async function updateFlower({ flowerId, name, price, quantityAdded, descr
 
   logger.info(`request by vendor ${vendorId} to update flower ${flowerId}'s following attributes`, compactAttributes);
 
-  const updatedFlower = (
-    await Flower.findOneAndUpdate({ _id: flowerId, vendorId, isActive: true }, compactAttributes, { new: true })
-  )?.toObject();
+  let updatedFlower;
+  if (invokeType === 'http') {
+    updatedFlower = (
+      await Flower.findOneAndUpdate({ _id: flowerId, vendorId, isActive: true }, compactAttributes, { new: true })
+    )?.toObject();
+  } else {
+    updatedFlower = (
+      await Flower.findOneAndUpdate({ _id: flowerId, isActive: true }, compactAttributes, { new: true })
+    )?.toObject();
+  }
 
   if (!updatedFlower) {
     logger.info('could not find flower with Id', { flowerId });
