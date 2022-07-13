@@ -4,43 +4,50 @@ import { standardHttpResponseInterface } from '../../common';
 import { validateAgainstJoiSchema } from '../../common/utility-functions/validate-against-schema';
 import { handleErrorAndConvertToJSON } from '../../common/utility-functions';
 import { getCurrentUser } from '../../common/utility-functions/get-current-user';
-import { updateFlower } from '.';
+import { updateBouquet } from '.';
 
-export async function updateFlowerHttpHandler({ standardRequestObject }): Promise<standardHttpResponseInterface> {
+export async function updateBouquetHttpHandler({ standardRequestObject }): Promise<standardHttpResponseInterface> {
   try {
-    validateAgainstJoiSchema(standardRequestObject, flowerUpdateHttpRequestSchema);
+    validateAgainstJoiSchema(standardRequestObject, bouquetUpdateHttpRequestSchema);
 
     const { userId } = getCurrentUser(standardRequestObject.session);
 
-    const { name, price, quantityAdded, description } = _.get(standardRequestObject, 'body');
+    const { name, discount, description, flowers } = _.get(standardRequestObject, 'body');
 
-    const flowerId = _.get(standardRequestObject, ['queryParameters', 'flowerId']);
+    const bouquetId = _.get(standardRequestObject, ['queryParameters', 'bouquetId']);
 
-    const updatedFlower = await updateFlower({
-      flowerId,
-      vendorId: userId,
+    const { updatedBouquet } = await updateBouquet({
+      bouquetId,
       name,
-      price,
-      quantityAdded,
+      discount,
+      flowers,
       description,
+      userId,
     });
     return {
       httpCode: 202,
-      body: updatedFlower,
+      body: updatedBouquet,
     };
   } catch (e) {
     return handleErrorAndConvertToJSON(e);
   }
 }
 
-const flowerUpdateHttpRequestSchema = Joi.object({
+const bouquetUpdateHttpRequestSchema = Joi.object({
+  queryParameters: Joi.object({
+    bouquetId: Joi.string().required(),
+  }),
   body: Joi.object({
     name: Joi.string().min(2).max(100),
-    price: Joi.number().min(0).max(1000),
-    quantityAdded: Joi.number().min(1).max(10000),
+    discount: Joi.number(),
     description: Joi.string(),
-  }).required(),
-  queryParameters: Joi.object({
-    flowerId: Joi.string().min(5).required(),
-  }).required(),
+    flowers: Joi.array()
+      .items(
+        Joi.object({
+          flowerId: Joi.string().required(),
+          quantity: Joi.number().min(1).required(),
+        }),
+      )
+      .min(1),
+  }),
 }).unknown();

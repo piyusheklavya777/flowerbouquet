@@ -1,37 +1,58 @@
 import _ from 'lodash';
-import { Flower } from '../db/models/flower';
-import { FlowerNotFoundError, logger } from '../../common';
-import { sendFlowerUpdatedEvent } from '../events';
+import { BouquetNotFoundError, logger } from '../../common';
+// import { sendFlowerUpdatedEvent } from '../events';
+import { Bouquet } from '../db/models/bouquet';
 
-export async function updateFlower({ flowerId, name, price, quantityAdded, description, vendorId }) {
-  let compactAttributes = _.omitBy(
+export async function updateBouquet({ bouquetId, name, discount, flowers, description, userId }) {
+  const compactAttributes = _.omitBy(
     {
+      bouquetId,
       name,
-      price,
-      quantityAdded,
+      discount,
+      flowers,
       description,
     },
     _.isNil,
   );
 
-  if (compactAttributes.quantityAdded) {
-    _.set(compactAttributes, '$inc', { quantityAvailable: compactAttributes.quantityAdded });
-    compactAttributes = _.omit(compactAttributes, ['quantityAdded']);
+  await Promise.all(
+    _.map(compactAttributes.flowers, ({ flowerId, quantity }) =>
+      _updateFlowers({ flowerId, quantity, bouquetId, userId }),
+    ),
+  );
+
+  delete compactAttributes.flowers;
+
+  const updatedBouquet = await Bouquet.findOneAndUpdate(
+    { _id: bouquetId, isActive: true, creatorId: userId },
+    compactAttributes,
+    { new: true },
+  );
+
+  if (!updatedBouquet) {
+    throw new BouquetNotFoundError();
   }
 
-  logger.info(`request by vendor ${vendorId} to update flower ${flowerId}'s following attributes`, compactAttributes);
+  logger.info('updated bouquet', updatedBouquet);
 
-  const updatedFlower = (
-    await Flower.findOneAndUpdate({ _id: flowerId, vendorId, isActive: true }, compactAttributes, { new: true })
-  )?.toObject();
+  return { updatedBouquet };
+}
 
-  if (!updatedFlower) {
-    logger.info('could not find flower with Id', { flowerId });
-    throw new FlowerNotFoundError();
-  }
-  logger.info(`Flower updated`, updatedFlower);
-
-  await sendFlowerUpdatedEvent({ flower: updatedFlower });
-
-  return updatedFlower;
+async function _updateFlowers({ flowerId, quantity, bouquetId, userId }) {
+  await Bouquet.updateMany(
+    {
+      _id: bouquetId,
+      isActive: true,
+      creatorId: userId,
+      'flowers.flowerId': flowerId,
+    },
+    {
+      $set: {
+        'flowers.$.quantity': quantity,
+      },
+    },
+    {
+      new: true,
+    },
+  );
 }
