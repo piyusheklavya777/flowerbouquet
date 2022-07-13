@@ -35,7 +35,7 @@ export async function updateBouquetHttpHandler({ standardRequestObject }): Promi
 
 const bouquetUpdateHttpRequestSchema = Joi.object({
   queryParameters: Joi.object({
-    bouquetId: Joi.string().required(),
+    bouquetId: Joi.string().min(5).required(),
   }),
   body: Joi.object({
     name: Joi.string().min(2).max(100),
