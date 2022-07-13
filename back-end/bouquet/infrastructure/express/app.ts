@@ -3,10 +3,12 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { convertExpressRequestObjectToStandard, setStandardResponseToExpress } from './helper';
-import { createFlowerHttpHandler } from '../../packages/create/http-adapter';
-import { updateFlowerHttpHandler } from '../../packages/update/http-adapter';
-import { deleteFlowerHttpHandler } from '../../packages/delete/http-adapter';
-import { getFlowerHttpHandler } from '../../packages/get/http-adapter';
+import { createBouquetHttpHandler } from '../../packages/create/http-adapter';
+import { updateBouquetHttpHandler } from '../../packages/update/http-adapter';
+import { deleteBouquetHttpHandler } from '../../packages/delete/http-adapter';
+// import { deleteFlowerHttpHandler } from '../../packages/delete/http-adapter';
+import { getFlowerHttpHandler } from '../../packages/flower-get/http-adapter';
+import { getBouquetHttpHandler } from '../../packages/get/http-adapter';
 
 const app = express();
 app.set('trust proxy', true);
@@ -21,40 +23,47 @@ app.use(
 
 // eslint-disable-next-line no-shadow
 enum httpPathEnums {
-  CREATE = '/api/flower',
-  UPDATE = '/api/flower/:flowerId',
-  DELETE = '/api/flower/:flowerId',
-  GET = '/api/flower/:flowerId',
-  GET_ALL = '/api/flower/',
+  CREATE_BOUQUET = '/api/bouquet',
+  UPDATE_BOUQUET = '/api/bouquet/:bouquetId',
+  DELETE_BOUQUET = '/api/bouquet/:bouquetId',
+  GET_BOUQUET = '/api/bouquet/:bouquetId',
+  GET_FLOWERS = '/api/bouquet/flower',
+  GET_ALL_BOUQUETS = '/api/bouquet/',
 }
 
-app.post(httpPathEnums.CREATE, async (expressRequest: Request, expressResponse: Response) => {
+app.post(httpPathEnums.CREATE_BOUQUET, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-  const standardResponse = await createFlowerHttpHandler({ standardRequestObject });
+  const standardResponse = await createBouquetHttpHandler({ standardRequestObject });
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
-app.put(httpPathEnums.UPDATE, async (expressRequest: Request, expressResponse: Response) => {
+app.put(httpPathEnums.UPDATE_BOUQUET, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-  const standardResponse = await updateFlowerHttpHandler({ standardRequestObject });
+  const standardResponse = await updateBouquetHttpHandler({ standardRequestObject });
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
-app.delete(httpPathEnums.DELETE, async (expressRequest: Request, expressResponse: Response) => {
+app.delete(httpPathEnums.DELETE_BOUQUET, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-  const standardResponse = await deleteFlowerHttpHandler({ standardRequestObject });
+  const standardResponse = await deleteBouquetHttpHandler({ standardRequestObject });
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
-app.get(httpPathEnums.GET, async (expressRequest: Request, expressResponse: Response) => {
+app.get(httpPathEnums.GET_FLOWERS, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
   const standardResponse = await getFlowerHttpHandler({ standardRequestObject });
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
-app.get(httpPathEnums.GET_ALL, async (expressRequest: Request, expressResponse: Response) => {
+app.get(httpPathEnums.GET_BOUQUET, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-  const standardResponse = await getFlowerHttpHandler({ standardRequestObject });
+  const standardResponse = await getBouquetHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
+
+app.get(httpPathEnums.GET_ALL_BOUQUETS, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await getBouquetHttpHandler({ standardRequestObject });
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
