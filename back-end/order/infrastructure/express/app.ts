@@ -7,6 +7,7 @@ import { createOrderHttpHandler } from '../../packages/order/create/http-adapter
 import { deleteOrderHttpHandler } from '../../packages/order/delete/http-adapter';
 import { getFlowerHttpHandler } from '../../packages/flower/get/http-adapter';
 import { getBouquetHttpHandler } from '../../packages/bouquet/get/http-adapter';
+import { getOrdersHttpHandler } from '../../packages/order/get/http-adapter';
 
 const app = express();
 app.set('trust proxy', true);
@@ -29,7 +30,6 @@ enum httpPathEnums {
 
   CREATE_ORDER = '/api/order',
   DELETE_ORDER = '/api/order/:orderId',
-  GET_ORDER = '/api/order/:orderId',
   GET_ALL_ORDERS = '/api/order/',
 }
 // flowers api
@@ -69,17 +69,11 @@ app.delete(httpPathEnums.DELETE_ORDER, async (expressRequest: Request, expressRe
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
-// app.get(httpPathEnums.GET_ORDER, async (expressRequest: Request, expressResponse: Response) => {
-//   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-//   const standardResponse = await getOrderHttpHandler({ standardRequestObject });
-//   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
-// });
-
-// app.get(httpPathEnums.GET_ALL_ORDERS, async (expressRequest: Request, expressResponse: Response) => {
-//   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
-//   const standardResponse = await getOrderHttpHandler({ standardRequestObject });
-//   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
-// });
+app.get(httpPathEnums.GET_ALL_ORDERS, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await getOrdersHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
 
 app.all('*', async (req, res) => {
   res
