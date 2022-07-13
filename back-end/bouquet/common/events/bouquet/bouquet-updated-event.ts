@@ -5,7 +5,6 @@ export interface BouquetUpdatedEvent {
   data: {
     bouquetId: string;
     name?: string;
-    description?: string;
     discount?: number;
     flowers?: [
       {
