@@ -7,6 +7,9 @@ import { natsWrapper } from '../../nats-singleton';
 import { FlowerCreatedListener } from '../events/flower-created-listener';
 import { FlowerUpdatedListener } from '../events/flower-updated-listener';
 import { FlowerDeletedListener } from '../events/flower-deleted-listener';
+import { BouquetCreatedListener } from '../events/bouquet-created-listener';
+import { BouquetUpdatedListener } from '../events/bouquet-updated-listener';
+import { BouquetDeletedListener } from '../events/bouquet-deleted-listener';
 
 async function applicationInitialize() {
   try {
@@ -72,6 +75,10 @@ async function _startListeningToEvents() {
   new FlowerCreatedListener(natsWrapper.client).listen();
   new FlowerUpdatedListener(natsWrapper.client).listen();
   new FlowerDeletedListener(natsWrapper.client).listen();
+
+  new BouquetCreatedListener(natsWrapper.client).listen();
+  new BouquetUpdatedListener(natsWrapper.client).listen();
+  new BouquetDeletedListener(natsWrapper.client).listen();
 }
 
 export { applicationInitialize };
