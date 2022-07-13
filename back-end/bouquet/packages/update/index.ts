@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { BouquetNotFoundError, logger } from '../../common';
 // import { sendFlowerUpdatedEvent } from '../events';
 import { Bouquet } from '../db/models/bouquet';
+import { sendBouquetUpdatedEvent } from '../events';
 
 export async function updateBouquet({ bouquetId, name, discount, flowers, description, userId }) {
   const compactAttributes = _.omitBy(
@@ -34,6 +35,8 @@ export async function updateBouquet({ bouquetId, name, discount, flowers, descri
   }
 
   logger.info('updated bouquet', updatedBouquet);
+
+  await sendBouquetUpdatedEvent({ bouquet: updatedBouquet });
 
   return { updatedBouquet };
 }
