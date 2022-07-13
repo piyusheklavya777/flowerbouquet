@@ -22,11 +22,11 @@ const sendBouquetCreatedEvent = async ({ bouquet }) => {
 
 const sendBouquetUpdatedEvent = async ({ bouquet }) => {
   try {
-    const { name, price, flowers, id: bouquetId } = bouquet;
+    const { name, discount, flowers, _id: bouquetId } = bouquet;
     const payload = {
       bouquetId,
       name,
-      price,
+      discount,
       flowers,
     };
     logger.info('publishing bouquet:updated event for bouquet', payload);
