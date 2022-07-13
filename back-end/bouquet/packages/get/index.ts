@@ -1,50 +1,70 @@
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
+import { Bouquet } from '../db/models/bouquet';
 import { Flower } from '../db/models/flower';
-import { FlowerNotFoundError, logger } from '../../common';
+import { BouquetNotFoundError, logger } from '../../common';
 
-export async function getFlowers({ flowerId, namePrefix, userId }) {
-  if (flowerId) return _singleGet({ flowerId, userId });
+export async function getBouquets({ bouquetId, namePrefix, userId }) {
+  if (bouquetId) return _singleGet({ bouquetId, userId });
 
-  let flowers;
+  let bouquets;
 
-  if (namePrefix) {
-    flowers = await Flower.find({
+  if (namePrefix === "''" || _.isEmpty(namePrefix)) {
+    bouquets = await Bouquet.find({ isActive: true });
+  } else {
+    bouquets = await Bouquet.find({
       name: {
         $regex: `^${namePrefix}.*`,
       },
       isActive: true,
     });
-  } else {
-    flowers = await Flower.find({ isActive: true });
   }
 
-  const flowerObjects = _.map(flowers, (v) => v.toObject());
+  const bouquetObjects = _.map(bouquets, (v) => v.toObject());
 
-  logger.info('flowerObjects', flowerObjects);
+  logger.info('bouquetObjects', bouquetObjects);
 
-  const flowersWithoutProps = _.map(flowerObjects, (flower) => {
-    if (flower.vendorId === userId) {
-      flower.belongsToThisUser = true;
-    }
-    delete flower.vendorId;
-    return flower;
-  });
+  const bouquetsWithoutProps = await Promise.all(
+    _.map(bouquetObjects, async (bouquet) => {
+      if (bouquet.creatorId === userId) {
+        bouquet.belongsToThisUser = true;
+      }
+      delete bouquet.creatorId;
+      return _populateBouquet(bouquet);
+    }),
+  );
 
-  return flowersWithoutProps;
-
-  // logger.info(`Flower updated`, updatedFlower);
-
-  // return updatedFlower;
+  return bouquetsWithoutProps;
 }
 
-async function _singleGet({ flowerId, userId }) {
-  const flower = (await Flower.findOne({ _id: flowerId, isActive: true }))?.toObject();
-  if (!flower) {
-    throw new FlowerNotFoundError();
+async function _singleGet({ bouquetId, userId }) {
+  let bouquet;
+  try {
+    bouquet = (await Bouquet.findOne({ _id: bouquetId, isActive: true }))?.toObject();
+    if (!bouquet) {
+      throw new BouquetNotFoundError();
+    }
+    if (bouquet.creatorId === userId) {
+      bouquet.belongsToThisUser = true;
+    }
+  } catch (e) {
+    logger.error('error while fetching data from bouquet db', { e });
+    throw e;
   }
-  if (flower.vendorId === userId) {
-    flower.belongsToThisUser = true;
-  }
-  return flower;
+  logger.silly('bouquet', bouquet);
+  return _populateBouquet(bouquet);
+}
+
+async function _populateBouquet(bouquet) {
+  bouquet.flowers = await Promise.all(
+    _.map(bouquet.flowers, async (flower) => {
+      const flowerDetails = await Flower.findOne({ isActive: true, _id: flower.flowerId });
+      flower.name = flowerDetails?.name;
+      flower.price = flowerDetails?.price;
+      delete flower._id;
+      return flower;
+    }),
+  );
+
+  return bouquet;
 }

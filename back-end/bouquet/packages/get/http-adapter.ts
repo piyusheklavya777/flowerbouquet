@@ -4,36 +4,36 @@ import { standardHttpResponseInterface } from '../../common';
 import { validateAgainstJoiSchema } from '../../common/utility-functions/validate-against-schema';
 import { handleErrorAndConvertToJSON } from '../../common/utility-functions';
 import { getCurrentUser } from '../../common/utility-functions/get-current-user';
-import { getFlowers } from './index';
+import { getBouquets } from './index';
 
-export async function getFlowerHttpHandler({ standardRequestObject }): Promise<standardHttpResponseInterface> {
+export async function getBouquetHttpHandler({ standardRequestObject }): Promise<standardHttpResponseInterface> {
   try {
-    validateAgainstJoiSchema(standardRequestObject, flowerGetHttpRequestSchema);
+    validateAgainstJoiSchema(standardRequestObject, bouquetGetHttpRequestSchema);
 
     const { userId } = getCurrentUser(standardRequestObject.session);
 
-    const flowerId = _.get(standardRequestObject, ['queryParameters', 'flowerId']);
+    const bouquetId = _.get(standardRequestObject, ['queryParameters', 'bouquetId']);
     const namePrefix = _.get(standardRequestObject, ['queryStringParameters', 'namePrefix']);
 
-    const flowers = await getFlowers({
-      flowerId,
+    const bouquets = await getBouquets({
+      bouquetId,
       userId,
       namePrefix,
     });
     return {
-      httpCode: 202,
-      body: flowers,
+      httpCode: 200,
+      body: bouquets,
     };
   } catch (e) {
     return handleErrorAndConvertToJSON(e);
   }
 }
 
-const flowerGetHttpRequestSchema = Joi.object({
+const bouquetGetHttpRequestSchema = Joi.object({
   queryStringParameters: Joi.object({
     namePrefix: Joi.string().min(1),
   }),
   queryParameters: Joi.object({
-    flowerId: Joi.string().min(5),
+    bouquetId: Joi.string().min(5),
   }),
 }).unknown();
