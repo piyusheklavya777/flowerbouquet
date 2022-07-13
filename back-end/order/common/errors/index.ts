@@ -12,3 +12,5 @@ export * from './event-publishing-error';
 export * from './event-listening-error';
 export * from './bouquet-already-exists-error';
 export * from './bouquet-not-found-error';
+export * from './invalid-order-error';
+export * from './order-not-found-error';
