@@ -13,7 +13,7 @@ export class BouquetCreatedListener extends Listener<BouquetCreatedEvent> {
       logger.info('received flower:create event', data);
       await createBouquet(data);
     } catch (e) {
-      logger.error('ERROR PROCESSING THE FLOWER:CREATED EVENT', e);
+      logger.error('ERROR PROCESSING THE BOUQUET:CREATED EVENT', e);
       return;
     }
     msg.ack();

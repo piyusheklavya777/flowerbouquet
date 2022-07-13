@@ -1,19 +1,19 @@
 import { Message } from 'node-nats-streaming';
-import { EventKeys, FlowerUpdatedEvent, Listener, logger } from '../../common';
-import { updateFlower } from '../../packages/flower-update';
+import { EventKeys, BouquetUpdatedEvent, Listener, logger } from '../../common';
+import { updateBouquet } from '../../packages/bouquet-update';
 import { queueGroupName } from './queue-group-name';
 
-export class FlowerUpdatedListener extends Listener<FlowerUpdatedEvent> {
-  subject: EventKeys.FLOWER_UPDATED = EventKeys.FLOWER_UPDATED;
+export class BouquetUpdatedListener extends Listener<BouquetUpdatedEvent> {
+  subject: EventKeys.BOUQUET_UPDATED = EventKeys.BOUQUET_UPDATED;
 
   queueGroupName = queueGroupName;
 
-  async onMessage(data: FlowerUpdatedEvent['data'], msg: Message) {
+  async onMessage(data: BouquetUpdatedEvent['data'], msg: Message) {
     try {
-      logger.info('received flower:updated event', data);
-      await updateFlower(data);
+      logger.silly('received bouquet:updated event', data);
+      await updateBouquet(data);
     } catch (e) {
-      logger.error('ERROR PROCESSING THE FLOWER:UPDATED EVENT', e);
+      logger.error('ERROR PROCESSING THE BOUQUET:UPDATED EVENT', e);
       return;
     }
     msg.ack();
