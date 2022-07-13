@@ -35,7 +35,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: bouquet-service
+            name: order-service
             port: 
               number: 3000
       # - path: /posts/?(.*)/comments

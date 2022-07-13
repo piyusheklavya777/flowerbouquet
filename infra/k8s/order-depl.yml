@@ -13,7 +13,7 @@ spec:
         app: order
     spec:
       containers:
-      - name: bouquet
+      - name: order
         image: eklav/fb-order
         env:
           - name: NATS_CLIENT_ID
