@@ -1,21 +1,25 @@
-import { Flower } from '../db/models/flower';
+import { Bouquet } from '../db/models/bouquet';
 import { logger } from '../../common/logger';
-import { FlowerNotFoundError } from '../../common';
-import { sendFlowerDeletedEvent } from '../events';
+import { BouquetNotFoundError } from '../../common';
+import { sendBouquetDeletedEvent } from '../events';
 
-export async function deleteFlower({ flowerId, vendorId }) {
-  logger.info(`request by vendor ${vendorId} to delete flower ${flowerId}`);
+export async function deleteBouquet({ bouquetId, userId }) {
+  logger.info(`request by user ${userId} to delete bouquet ${bouquetId}`);
 
-  const updatedFlower = (
-    await Flower.findOneAndUpdate({ _id: flowerId, vendorId, isActive: true }, { isActive: false }, { new: true })
+  const updatedBouquet = (
+    await Bouquet.findOneAndUpdate(
+      { _id: bouquetId, creatorId: userId, isActive: true },
+      { isActive: false },
+      { new: true },
+    )
   )?.toObject();
 
-  if (!updatedFlower) {
-    logger.info('could not find flower with Id', { flowerId });
-    throw new FlowerNotFoundError();
+  if (!updatedBouquet) {
+    logger.info('could not find bouquet with Id', { bouquetId });
+    throw new BouquetNotFoundError();
   }
 
-  await sendFlowerDeletedEvent({ flowerId: updatedFlower.id });
+  await sendBouquetDeletedEvent({ bouquetId: updatedBouquet._id });
 
-  logger.info(`Flower deleted`, updatedFlower);
+  logger.info(`Bouquet deleted`, updatedBouquet);
 }

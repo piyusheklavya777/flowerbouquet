@@ -4,19 +4,19 @@ import { standardHttpResponseInterface } from '../../common';
 import { validateAgainstJoiSchema } from '../../common/utility-functions/validate-against-schema';
 import { handleErrorAndConvertToJSON } from '../../common/utility-functions';
 import { getCurrentUser } from '../../common/utility-functions/get-current-user';
-import { deleteFlower } from '.';
+import { deleteBouquet } from '.';
 
-export async function deleteFlowerHttpHandler({ standardRequestObject }): Promise<standardHttpResponseInterface> {
+export async function deleteBouquetHttpHandler({ standardRequestObject }): Promise<standardHttpResponseInterface> {
   try {
-    validateAgainstJoiSchema(standardRequestObject, flowerDeleteHttpRequestSchema);
+    validateAgainstJoiSchema(standardRequestObject, bouquetDeleteHttpRequestSchema);
 
     const { userId } = getCurrentUser(standardRequestObject.session);
 
-    const flowerId = _.get(standardRequestObject, ['queryParameters', 'flowerId']);
+    const bouquetId = _.get(standardRequestObject, ['queryParameters', 'bouquetId']);
 
-    await deleteFlower({
-      flowerId,
-      vendorId: userId,
+    await deleteBouquet({
+      bouquetId,
+      userId,
     });
     return {
       httpCode: 200,
@@ -26,8 +26,8 @@ export async function deleteFlowerHttpHandler({ standardRequestObject }): Promis
   }
 }
 
-const flowerDeleteHttpRequestSchema = Joi.object({
+const bouquetDeleteHttpRequestSchema = Joi.object({
   queryParameters: Joi.object({
-    flowerId: Joi.string().min(5).required(),
+    bouquetId: Joi.string().min(5).required(),
   }).required(),
 }).unknown();
