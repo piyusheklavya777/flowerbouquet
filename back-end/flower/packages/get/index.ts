@@ -24,6 +24,8 @@ export async function getFlowers({ flowerId, namePrefix, userId }) {
   logger.info('flowerObjects', flowerObjects);
 
   const flowersWithoutProps = _.map(flowerObjects, (flower) => {
+    flower.flowerId = flower._id;
+    delete flower._id;
     if (flower.vendorId === userId) {
       flower.belongsToThisUser = true;
     }
@@ -43,6 +45,7 @@ async function _singleGet({ flowerId, userId }) {
   if (!flower) {
     throw new FlowerNotFoundError();
   }
+  flower.flowerId = flowerId;
   if (flower.vendorId === userId) {
     flower.belongsToThisUser = true;
   }
