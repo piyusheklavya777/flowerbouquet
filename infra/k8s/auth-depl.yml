@@ -15,6 +15,7 @@ spec:
       containers:
       - name: auth
         image: eklav/fb-auth
+        imagePullPolicy: Never
         env:
           # - name: JWT_KEY
           #   value: asdf
