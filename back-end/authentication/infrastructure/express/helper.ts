@@ -30,7 +30,7 @@ export function setStandardResponseToExpress(
     }
     const options = _.get(standardResponse, 'options');
     if (options) {
-      _.map(options.unsetCookies, (c) => expressResponseObject.clearCookie(c));
+      _.map([...options.unsetCookies, 'session'], (c) => expressResponseObject.clearCookie(c));
     }
     expressResponseObject.status(standardResponse.httpCode).send(standardResponse.body);
   } catch (e) {
