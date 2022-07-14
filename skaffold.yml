@@ -40,3 +40,11 @@ build:
         manual:
           - src: '***/*.ts'
             dest: .
+    - image: eklav/fb-client
+      context: front-end
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: .
