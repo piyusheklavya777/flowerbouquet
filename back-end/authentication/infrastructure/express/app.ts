@@ -3,11 +3,11 @@ import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 import { Request, Response } from 'express';
-import _ from 'lodash';
 import { convertExpressRequestObjectToStandard, setStandardResponseToExpress } from './helper';
 import { signupHttpHandler } from '../../packages/sign-up/http-adapter';
 import { signinHttpHandler } from '../../packages/sign-in/http-adapter';
 import { signoutHttpHandler } from '../../packages/sign-out/http-adapter';
+import { getCurrentUserHttpHandler } from '../../packages/current-user/http-adapter';
 
 const app = express();
 app.set('trust proxy', true);
@@ -23,7 +23,8 @@ app.use(
 export enum httpPathEnums {
     SIGN_UP = '/api/users/signup',
     SIGN_IN = '/api/users/signin',
-    SIGN_OUT = '/api/users/signout'
+    SIGN_OUT = '/api/users/signout',
+    CURRENT_USER = '/api/users/current-user'
 }
 
 app.post(httpPathEnums.SIGN_UP, async (expressRequest: Request, expressResponse: Response) => {
@@ -41,6 +42,12 @@ app.post(httpPathEnums.SIGN_IN, async (expressRequest: Request, expressResponse:
 app.post(httpPathEnums.SIGN_OUT, async (expressRequest: Request, expressResponse: Response) => {
   const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
   const standardResponse = await signoutHttpHandler({ standardRequestObject });
+  setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
+});
+
+app.get(httpPathEnums.CURRENT_USER, async (expressRequest: Request, expressResponse: Response) => {
+  const standardRequestObject = convertExpressRequestObjectToStandard(expressRequest);
+  const standardResponse = await getCurrentUserHttpHandler({ standardRequestObject });
   setStandardResponseToExpress(standardResponse, expressRequest, expressResponse);
 });
 
