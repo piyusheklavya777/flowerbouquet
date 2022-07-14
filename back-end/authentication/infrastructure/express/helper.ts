@@ -1,20 +1,18 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
+import { handleErrorAndConvertToJSON } from '../../common';
 import logger from '../../common/logger';
-import { handleErrorAndConvertToJSON } from '../../common/index';
-
 export function convertExpressRequestObjectToStandard(request: Request) {
-  logger.info('express request', request.params);
   const queryStringParameters = request.query;
   const { body } = request;
-  const queryParameter = request.params;
+  const queryParameters = request.params;
   const standardStructure = {};
   const session = _.get(request, 'session');
 
   _.set(standardStructure, 'session', session);
   _.set(standardStructure, 'queryStringParameters', queryStringParameters);
   _.set(standardStructure, 'body', body);
-  _.set(standardStructure, 'queryParameter', queryParameter);
+  _.set(standardStructure, 'queryParameters', queryParameters);
   return standardStructure;
 }
 
