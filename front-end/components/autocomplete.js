@@ -3,11 +3,6 @@ import useRequest from "../hooks/use-request";
 
 const AutoComplete = ({  }) => {
 
-  const flowersSuggested = [
-    { name: 'lily', flowerId: 'id-lily', price: 200},
-    { name: 'appy', flowerId: 'id-appy', price: 400},
-    { name: 'like', flowerId: 'id-like', price: 600},
-  ]
 
   const data = [
         "Asparagus",
@@ -19,7 +14,7 @@ const AutoComplete = ({  }) => {
         "Celery", 
         "Corn"
     ]
-    
+  const [flowersSuggested, setFlowersSuggested] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const [suggestionsActive, setSuggestionsActive] = useState(false);
@@ -37,9 +32,10 @@ const AutoComplete = ({  }) => {
   const handleChange = async (e) => {
     const query = e.target.value.toLowerCase();
     setValue(query);
-    flowersSuggested = await doRequest();
-    console.log('FLOWERS', {flowersSuggested, query, value});
     if (query.length > 1) {
+		const flowersAPI = await doRequest();
+		setFlowersSuggested(flowersAPI);
+		console.log('FLOWERS', {flowersSuggested, query, value});
       const filterSuggestions = data.filter(
         (suggestion) =>
           suggestion.toLowerCase().indexOf(query) > -1
@@ -84,14 +80,14 @@ const AutoComplete = ({  }) => {
   const Suggestions = () => {
     return (
       <ul className="suggestions">
-        {suggestions.map((suggestion, index) => {
+        {flowersSuggested.map((suggestion, index) => {
           return (
             <li
               className={index === suggestionIndex ? "active" : ""}
               key={index}
               onClick={handleClick}
             >
-              {suggestion}
+              {suggestion.name}
             </li>
           );
         })}
