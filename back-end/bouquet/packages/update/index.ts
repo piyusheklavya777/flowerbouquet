@@ -38,7 +38,7 @@ export async function updateBouquet({ bouquetId, name, discount, flowers, descri
 
   await sendBouquetUpdatedEvent({ bouquet: updatedBouquet });
 
-  return { updatedBouquet };
+  return { ...updatedBouquet, bouquetId };
 }
 
 async function _updateFlowers({ flowerId, quantity, bouquetId, userId }) {

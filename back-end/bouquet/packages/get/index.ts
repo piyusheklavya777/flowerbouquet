@@ -49,6 +49,8 @@ async function _singleGet({ bouquetId, userId }) {
     if (bouquet.creatorId === userId) {
       bouquet.belongsToThisUser = true;
     }
+    bouquet.bouquetId = bouquet._id;
+    delete bouquet._id;
   } catch (e) {
     logger.error('error while fetching data from bouquet db', { e });
     throw e;

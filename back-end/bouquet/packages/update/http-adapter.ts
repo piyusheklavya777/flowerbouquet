@@ -16,7 +16,7 @@ export async function updateBouquetHttpHandler({ standardRequestObject }): Promi
 
     const bouquetId = _.get(standardRequestObject, ['queryParameters', 'bouquetId']);
 
-    const { updatedBouquet } = await updateBouquet({
+    const updatedBouquet = await updateBouquet({
       bouquetId,
       name,
       discount,
