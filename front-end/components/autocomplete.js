@@ -27,7 +27,7 @@ const AutoComplete = ({  }) => {
 
   let flowerssuggested;
   const { doRequest, errors } = useRequest({
-    url: `/api/bouquet/flower/?namePrefix=${value}`,
+    url: `/api/bouquet/flower/?namePrefix=${value != "''" ? value : ''}`,
     method: 'get',
     // onSuccess: () => {
     //     Router.push('/');
@@ -37,6 +37,8 @@ const AutoComplete = ({  }) => {
   const handleChange = async (e) => {
     const query = e.target.value.toLowerCase();
     setValue(query);
+    flowersSuggested = await doRequest();
+    console.log('FLOWERS', {flowersSuggested, query, value});
     if (query.length > 1) {
       const filterSuggestions = data.filter(
         (suggestion) =>
@@ -44,9 +46,6 @@ const AutoComplete = ({  }) => {
       );
       setSuggestions(filterSuggestions);
       setSuggestionsActive(true);
-      
-      flowersSuggested = await doRequest();
-      console.log('FLOWERS', {flowersSuggested, query, value});
 
     } else {
       setSuggestionsActive(false);
