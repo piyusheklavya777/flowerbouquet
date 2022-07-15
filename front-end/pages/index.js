@@ -1,46 +1,66 @@
-// import Link from 'next/link';
+import Link from 'next/link';
+import _ from 'lodash';
 
-// const LandingPage = ({ currentUser, tickets }) => {
-//   const ticketList = tickets.map((ticket) => {
-//     return (
-//       <tr key={ticket.id}>
-//         <td>{ticket.title}</td>
-//         <td>{ticket.price}</td>
-//         <td>
-//           <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
-//             <a>View</a>
-//           </Link>
-//         </td>
-//       </tr>
-//     );
-//   });
+function _calculatePrice({ flowers }) {
+  let price = _.reduce(flowers, (acc, flower) => {
+    acc += flower.price;
+    return acc;
+  }, 0);
+  return price;
+}
 
-//   return (
-//     <div>
-//       <h1>Tickets</h1>
-//       <table className="table">
-//         <thead>
-//           <tr>
-//             <th>Title</th>
-//             <th>Price</th>
-//             <th>Link</th>
-//           </tr>
-//         </thead>
-//         <tbody>{ticketList}</tbody>
-//       </table>
-//     </div>
-//   );
-// };
+const LandingPage = ({ currentUser, bouquets }) => {
+  const bouquetList = _.map(bouquets, (bouquet) => {
+    const { flowers, description, name, bouquetId, discount } = bouquet;
+    const bouquetPrice = (1 - (parseInt(discount, 10) / 100) ) * _calculatePrice({ flowers });
+    return (
+      <tr key={bouquetId}>
+        <td>{name}</td>
+        <td>{description}</td>
+        <td>{bouquetPrice}</td>
+        <td>
+          <Link
+          href={{
+            pathname: '/bouquet/singleview',
+            query: { bouquetId },
+          }}
+        ><a>see details</a></Link>
+        </td>
+      </tr>
+    );
+  });
+  console.log('current user', currentUser);
 
-// LandingPage.getInitialProps = async (context, client, currentUser) => {
-//   const { data } = await client.get('/api/tickets');
+  return (
+    <div>
+      <h1>Bouquets</h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>About</th>
+            <th>Price</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>{bouquetList}</tbody>
+      </table>
+    </div>
+  );
 
-//   return { tickets: data };
-// };
+};
 
-// export default LandingPage;
+LandingPage.getInitialProps = async (context, client, currentUser) => {
+  let bouquets;
+  try {
+    const response = await client.get('/api/bouquet');
+    bouquets = _.get(response, ['data']);
+  } catch (e) {
+    const error = _.get(e, ['response', 'data']);
+    console.log('AXIOS ERROR: GET /api/bouquet', error);
+  }
 
-import { Form } from 'antd';
+  return { bouquets };
+};
 
-const fn = () => <h1>appy</h1>;
-export default fn;
+export default LandingPage;
