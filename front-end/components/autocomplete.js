@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useRequest from "../hooks/use-request";
 
 const AutoComplete = ({  }) => {
 
@@ -24,7 +25,16 @@ const AutoComplete = ({  }) => {
   const [suggestionsActive, setSuggestionsActive] = useState(false);
   const [value, setValue] = useState("");
 
-  const handleChange = (e) => {
+  let flowerssuggested;
+  const { doRequest, errors } = useRequest({
+    url: `/api/bouquet/flower/?namePrefix=${value}`,
+    method: 'get',
+    // onSuccess: () => {
+    //     Router.push('/');
+    // }
+  });
+
+  const handleChange = async (e) => {
     const query = e.target.value.toLowerCase();
     setValue(query);
     if (query.length > 1) {
@@ -34,6 +44,10 @@ const AutoComplete = ({  }) => {
       );
       setSuggestions(filterSuggestions);
       setSuggestionsActive(true);
+      
+      flowersSuggested = await doRequest();
+      console.log('FLOWERS', {flowersSuggested, query, value});
+
     } else {
       setSuggestionsActive(false);
     }
@@ -95,6 +109,7 @@ const AutoComplete = ({  }) => {
         onKeyDown={handleKeyDown}
       />
       {suggestionsActive && <Suggestions />}
+      {errors}
     </div>
   );
   
