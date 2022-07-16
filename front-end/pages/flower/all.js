@@ -13,7 +13,7 @@ const Flowers = ({ flowers }) => {
     const [flowerId, setFlowerId] = useState();
     const [editFlower, setEditFlower] = useState(false);
 
-    const { doEditRequest, errors } = useRequest({
+    const { doRequest: doEditRequest, errors } = useRequest({
         url: `/api/flower/${flowerId}`,
         method: 'put',
         body: {

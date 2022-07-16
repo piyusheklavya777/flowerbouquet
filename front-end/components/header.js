@@ -8,6 +8,7 @@ export default ({ currentUser }) => {
     !name && { label: 'Sign In', href: '/auth/signin' },
     name && { label: 'Flowers', href: '/flower/all' },
     name && { label: 'Bouquets', href: '/' },
+    name && { label:'My Orders', href: '/orders/all'},
     name && { label: 'Sign Out', href: '/auth/signout' },
   ]
     .filter((linkConfig) => linkConfig)
