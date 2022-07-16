@@ -2,28 +2,29 @@ import _ from 'lodash';
 import Router from 'next/router';
 import useRequest from '../../hooks/use-request';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import AutoCompleteInput from '../../components/autocomplete';
+import BouquetDeleteBtn from '../../components/bouquet-delete-btn';
 
 function _calculatePrice({ flowers, discount }) {
   let price = _.reduce(flowers, (acc, flower) => {
-    acc += flower.price;
+    acc += (flower.price * flower.quantity);
     return acc;
   }, 0);
   return (1 - (parseInt(discount, 10) / 100 ) ) * price;
 }
 
-
-
 const Bouquet = ({ bouquet }) => {
   const { belongsToThisUser } = bouquet;
   const [name, setName] = useState(bouquet.name);
-  // const [flowers, setFlowers] = useState(bouquet.flowers);
+  const [flowers, setFlowers] = useState(bouquet.flowers);
   const [discount, setDiscount] = useState(bouquet.discount);
   const [price, setPrice] = useState(_calculatePrice({flowers, discount }));
   const [description, setDescription] = useState(bouquet.description);
   const [bouquetId, setBouquetId] = useState(bouquet.bouquetId);
   const [editBouquet, setEditBouquet] = useState(false);
-  
+
+  const [showAutoComplete, setShowAutoComplete] = useState(false);
 
   const { doRequest, errors } = useRequest({
     url: `/api/bouquet/${bouquetId}`,
@@ -75,6 +76,25 @@ const Bouquet = ({ bouquet }) => {
     setDescription(bouquet?.description);
 }
 
+  const removeIndex = (i) => {
+    let newFlowers = [...flowers];
+    newFlowers.splice(i,1);
+    setFlowers(newFlowers);
+    // console.log('FLOWERS RF', flowers);
+  }
+
+  const handleChange = (i, e) => {
+    let newFlowers = [...flowers];
+    newFlowers[i][e.target.name] = e.target.value;
+    setFlowers(newFlowers);
+    setPrice(_calculatePrice({ flowers, discount }))
+    // console.log('FLOWERS QC', flowers);
+  }
+
+  const addFlower = () => {
+    setShowAutoComplete(true);
+  }
+
   if (editBouquet) {
     return (
       <div>
@@ -106,17 +126,45 @@ const Bouquet = ({ bouquet }) => {
                 </div>
                 <div className="form-group">
                     <label>Flowers</label>
-                    <input
-                        value={flowers}
-                        onChange={e => setFlowrs(e.target.value)}
-                        className="form-control"
-                    />
                 </div>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Links</th>
+                      </tr>
+                    </thead>
+                  <tbody>
+                    {flowers.map(({name, quantity, price}, index) => {
+                        return (
+                          <tr>
+                            <td>{name}</td>
+                            <td>
+                              <input value={quantity} name="quantity" onChange={e => handleChange(index, e)}/>
+                            </td>
+                            <td>{price}</td>
+                            <td>
+                            <button onClick={() => removeIndex(index)} className="btn btn-danger">Remove</button>
+                            </td>
+                          </tr>
+                        )
+                      })
+                    }
+                  </tbody>
+                </table>
                 {errors}
-                <button className="btn btn-primary">Submit Changes</button>
+                { showAutoComplete && <AutoCompleteInput allFlowers={flowers} setFlowers={setFlowers} setShowAutoComplete={setShowAutoComplete}></AutoCompleteInput>}
+                <div className="button-section">
+                  <button className="btn btn-primary " type="button" onClick={() => addFlower()}>Add New Flower</button>
+                  <button className="btn btn-primary">Submit Changes</button>
+                  
+                </div>
+                
             </form>
             <hr></hr>
-            <button className="btn btn-secondary" onClick={() => setEditBouquet(false)}>Exit Edit</button>
+            <button className="btn btn-secondary" onClick={() => {setEditBouquet(false); Router.reload(`/bouquet/singleview?bouquetId=${bouquetId}`);}}>Exit Edit</button>
         </div>
     )
   }
@@ -142,7 +190,8 @@ const Bouquet = ({ bouquet }) => {
       </table>
       {belongsToThisUser && <button onClick={() => setEditFields({ bouquet })} className="btn btn-primary">
               Edit
-              </button>}
+      </button>}
+      {belongsToThisUser && <BouquetDeleteBtn bouquetId={bouquetId}/>}
       {errors}
     </div>
   );

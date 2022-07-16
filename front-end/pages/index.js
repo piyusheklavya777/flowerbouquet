@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import _ from 'lodash';
+import Router from 'next/router';
+import { useState } from 'react';
 
 function _calculatePrice({ flowers }) {
   let price = _.reduce(flowers, (acc, flower) => {
@@ -10,6 +12,10 @@ function _calculatePrice({ flowers }) {
 }
 
 const LandingPage = ({ currentUser, bouquets }) => {
+
+  const [page, setPage] = useState('show-all-bouquets');
+
+  const _isLoggedIn = () => currentUser && currentUser.name;
   const bouquetList = _.map(bouquets, (bouquet) => {
     const { flowers, description, name, bouquetId, discount } = bouquet;
     const bouquetPrice = (1 - (parseInt(discount, 10) / 100) ) * _calculatePrice({ flowers });
@@ -29,7 +35,10 @@ const LandingPage = ({ currentUser, bouquets }) => {
       </tr>
     );
   });
-  console.log('current user', currentUser);
+
+  if (page === 'create-bouquet') {
+    Router.push('/bouquet/create');
+  }
 
   return (
     <div>
@@ -45,6 +54,8 @@ const LandingPage = ({ currentUser, bouquets }) => {
         </thead>
         <tbody>{bouquetList}</tbody>
       </table>
+      <hr/>
+      {_isLoggedIn() &&  <button className="btn btn-primary " type="button" onClick={() => setPage('create-bouquet')}>Create Bouquet</button>}
     </div>
   );
 

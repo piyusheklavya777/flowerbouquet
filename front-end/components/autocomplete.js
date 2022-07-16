@@ -1,32 +1,16 @@
+import _ from "lodash";
 import { useState } from "react";
 import useRequest from "../hooks/use-request";
 
-const AutoComplete = ({  }) => {
-
-
-  const data = [
-        "Asparagus",
-        "Beetroot",
-        "Broccoli",
-        "Cabbage", 
-        "Carrot", 
-        "Cauliflower", 
-        "Celery", 
-        "Corn"
-    ]
+const AutoComplete = ({ allFlowers, setFlowers, setShowAutoComplete }) => {
+  
   const [flowersSuggested, setFlowersSuggested] = useState([]);
-  const [suggestions, setSuggestions] = useState([]);
-  const [suggestionIndex, setSuggestionIndex] = useState(0);
   const [suggestionsActive, setSuggestionsActive] = useState(false);
   const [value, setValue] = useState("");
 
-  let flowerssuggested;
   const { doRequest, errors } = useRequest({
     url: `/api/bouquet/flower/?namePrefix=${value != "''" ? value : ''}`,
     method: 'get',
-    // onSuccess: () => {
-    //     Router.push('/');
-    // }
   });
 
   const handleChange = async (e) => {
@@ -34,48 +18,35 @@ const AutoComplete = ({  }) => {
     setValue(query);
     if (query.length > 1) {
 		const flowersAPI = await doRequest();
-		setFlowersSuggested(flowersAPI);
-		console.log('FLOWERS', {flowersSuggested, query, value});
-      const filterSuggestions = data.filter(
-        (suggestion) =>
-          suggestion.toLowerCase().indexOf(query) > -1
-      );
-      setSuggestions(filterSuggestions);
-      setSuggestionsActive(true);
-
+    const flowersFiltered = _.filter(flowersAPI, (flower) => !(_.map(allFlowers, f => f.flowerId)).includes(flower.flowerId));
+		setFlowersSuggested(flowersFiltered);
+    setSuggestionsActive(true);
     } else {
       setSuggestionsActive(false);
     }
   };
 
   const handleClick = (e) => {
-    setSuggestions([]);
+    const finalName = e.target.innerText;
     setValue(e.target.innerText);
+    const flowerSelected = _.filter(flowersSuggested, list => list.name === finalName)[0];
+    appendToFlowers(flowerSelected);
+    setValue('');
+    setFlowersSuggested([]);
     setSuggestionsActive(false);
+    setShowAutoComplete(false);
   };
 
-  const handleKeyDown = (e) => {
-    // UP ARROW
-    if (e.keyCode === 38) {
-      if (suggestionIndex === 0) {
-        return;
-      }
-      setSuggestionIndex(suggestionIndex - 1);
+  const appendToFlowers = (newFlower) => {
+    const flowerToAppend = {
+      name: newFlower.name,
+      price: newFlower.price,
+      flowerId: newFlower.flowerId,
+      quantity: 1,
     }
-    // DOWN ARROW
-    else if (e.keyCode === 40) {
-      if (suggestionIndex - 1 === suggestions.length) {
-        return;
-      }
-      setSuggestionIndex(suggestionIndex + 1);
-    }
-    // ENTER
-    else if (e.keyCode === 13) {
-      setValue(suggestions[suggestionIndex]);
-      setSuggestionIndex(0);
-      setSuggestionsActive(false);
-    }
-  };
+    const flowersArr = [...allFlowers, flowerToAppend];
+    setFlowers(flowersArr);
+  }
 
   const Suggestions = () => {
     return (
@@ -83,7 +54,7 @@ const AutoComplete = ({  }) => {
         {flowersSuggested.map((suggestion, index) => {
           return (
             <li
-              className={index === suggestionIndex ? "active" : ""}
+              // className={index === suggestionIndex ? "active" : ""}
               key={index}
               onClick={handleClick}
             >
@@ -101,7 +72,7 @@ const AutoComplete = ({  }) => {
         type="text"
         value={value}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
+        // onKeyDown={handleKeyDown}
       />
       {suggestionsActive && <Suggestions />}
       {errors}
