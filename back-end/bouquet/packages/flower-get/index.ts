@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
 import { Flower } from '../db/models/flower';
-import { logger } from '../../common';
+// import { logger } from '../../common';
 
 export async function getFlowers({ namePrefix }) {
   if (namePrefix === "''" || _.isEmpty(namePrefix)) {
@@ -21,14 +21,20 @@ export async function getFlowers({ namePrefix }) {
     flowers = await Flower.find({ isActive: true });
   }
 
-  const flowerObjects = _.map(flowers, (v) => v.toObject());
-
-  logger.info('flowerObjects', flowerObjects);
-
-  return flowerObjects;
+  const flowerObjectsSanitized = _.map(flowers, (flower) => {
+    const flowerObject = flower.toObject();
+    flowerObject.flowerId = flowerObject._id;
+    return flowerObject;
+  });
+  return flowerObjectsSanitized;
 }
 
 async function _getAll() {
   const flowers = await Flower.find({ isActive: true });
-  return flowers;
+  const flowerObjectsSanitized = _.map(flowers, (flower) => {
+    const flowerObject = flower.toObject();
+    flowerObject.flowerId = flowerObject._id;
+    return flowerObject;
+  });
+  return flowerObjectsSanitized;
 }
