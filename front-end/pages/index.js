@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 function _calculatePrice({ flowers }) {
   let price = _.reduce(flowers, (acc, flower) => {
-    acc += flower.price;
+    acc += flower.price * flower.quantity;
     return acc;
   }, 0);
   return price;
@@ -56,6 +56,7 @@ const LandingPage = ({ currentUser, bouquets }) => {
       </table>
       <hr/>
       {_isLoggedIn() &&  <button className="btn btn-primary " type="button" onClick={() => setPage('create-bouquet')}>Create Bouquet</button>}
+      {_isLoggedIn() &&  <button className="btn btn-primary " type="button" onClick={() => Router.push('/orders/create')}>Buy Bouquets</button>}
     </div>
   );
 
