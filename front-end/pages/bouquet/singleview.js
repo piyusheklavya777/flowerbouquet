@@ -133,7 +133,7 @@ const Bouquet = ({ bouquet }) => {
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Price</th>
-                        <th>Links</th>
+                        {/* <th>Links</th> */}
                       </tr>
                     </thead>
                   <tbody>
@@ -145,9 +145,9 @@ const Bouquet = ({ bouquet }) => {
                               <input value={quantity} name="quantity" onChange={e => handleChange(index, e)}/>
                             </td>
                             <td>{price}</td>
-                            <td>
+                            {/* <td>
                             <button onClick={() => removeIndex(index)} className="btn btn-danger">Remove</button>
-                            </td>
+                            </td> */}
                           </tr>
                         )
                       })
