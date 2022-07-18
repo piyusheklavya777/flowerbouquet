@@ -55,8 +55,9 @@ const LandingPage = ({ currentUser, bouquets }) => {
         <tbody>{bouquetList}</tbody>
       </table>
       <hr/>
+      {bouquets.length === 0 && <h4>No Bouquets to show.</h4> }
       {_isLoggedIn() &&  <button className="btn btn-primary " type="button" onClick={() => setPage('create-bouquet')}>Create Bouquet</button>}
-      {_isLoggedIn() &&  <button className="btn btn-primary " type="button" onClick={() => Router.push('/orders/create')}>Buy Bouquets</button>}
+      {(_isLoggedIn() && bouquets.length > 0) &&  <button className="btn btn-primary " type="button" onClick={() => Router.push('/orders/create')}>Buy Bouquets</button>}
     </div>
   );
 

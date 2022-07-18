@@ -145,6 +145,7 @@ const Flowers = (params) => {
             </thead>
             <tbody>{flowerList}</tbody>
             </table>
+            {flowerList.length === 0 && <h4>No Flowers to show.</h4>}
         
     </div>
 

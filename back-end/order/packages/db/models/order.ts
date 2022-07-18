@@ -7,6 +7,7 @@ interface OrderAttributes {
   isActive: boolean;
   customerId: string;
   status: string;
+  price: number;
   customerName: string;
   bouquets: {
     bouquetId: string;
@@ -26,6 +27,7 @@ interface OrderDoc extends mongoose.Document {
   customerId: string;
   customerName: string;
   status: string;
+  price: number;
   bouquets: {
     bouquetId: string;
     discount: number;
@@ -48,6 +50,10 @@ const orderSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    price: {
+      type: Number,
+      required: true,
     },
     customerId: {
       type: String,

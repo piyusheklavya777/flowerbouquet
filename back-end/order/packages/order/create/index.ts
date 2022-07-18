@@ -9,15 +9,16 @@ import { Bouquet } from '../../db/models/bouquet';
 
 export async function createOrder({ bouquets, status, customerId, customerName }) {
   const flowerDetails = await _checkValidBouquets({ bouquets });
-  _assingNameAndPriceToFlowers({ bouquets, flowerDetails });
-
   await _assignDiscounts({ bouquets });
+
+  const totalPrice = _assingNameAndPriceToFlowers({ bouquets, flowerDetails });
 
   const createdOrder = Order.build({
     status,
     customerId,
     customerName,
     bouquets,
+    price: totalPrice,
     isActive: true,
   });
 
@@ -73,13 +74,19 @@ async function _checkValidBouquets({ bouquets }) {
 }
 
 function _assingNameAndPriceToFlowers({ bouquets, flowerDetails }) {
-  for (const { flowers } of bouquets) {
+  let totalPrice = 0;
+  for (const { flowers, discount } of bouquets) {
+    let thisBouquetPrice = 0;
     for (const flower of flowers) {
       flower.name = flowerDetails[flower.flowerId].name;
       flower.price = flowerDetails[flower.flowerId].price;
+      thisBouquetPrice += parseInt(flower.price, 10) * parseInt(flower.quantity, 10);
       logger.info('updated flower:s', flower);
     }
+    totalPrice += (thisBouquetPrice * (100 - parseInt(discount, 10))) / 100;
   }
+
+  return totalPrice;
 }
 
 async function _assignDiscounts({ bouquets }) {

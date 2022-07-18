@@ -8,6 +8,7 @@ const Orders = ({orders}) => {
             <div>
                 {_.map(orders, (order, index) => {
                     const status = _.get(order, 'status');
+                    const price = _.get(order, 'price');
                     const bouquetsData = _.get(order, 'bouquets');
                     const orderId = _.get(order, 'id')
                     const bouquets = _.map(bouquetsData, (bouquet, index) => {
@@ -45,6 +46,7 @@ const Orders = ({orders}) => {
                             <hr/>
                             <label>Order Id: {orderId} </label>
                             <h6> Status: {status}</h6>
+                            <h5>total price: {price}</h5>
                             {status === 'created' && <OrderCancelBtn orderId={orderId}></OrderCancelBtn>}
                             <h3>Bouquets</h3>
                             {bouquets}

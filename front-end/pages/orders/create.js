@@ -15,7 +15,7 @@ export default () => {
         body: {
             // bouquets: newBouquets,
         },
-        onSuccess: ({ bouquetId }) => Router.reload(`/orders/all`)
+        onSuccess: () => Router.reload(`/orders/all`)
     })
 
     const onSubmit = async e => {
@@ -32,19 +32,19 @@ export default () => {
         await createOrder({ bouquets: newBouquets });
     }
 
-    const removeIndex = (i) => {
-        let newFlowers = [...flowers];
-        newFlowers.splice(i,1);
-        setFlowers(newFlowers);
-        // console.log('FLOWERS RF', flowers);
-      }
+    // const removeIndex = (i) => {
+    //     let newFlowers = [...flowers];
+    //     newFlowers.splice(i,1);
+    //     setFlowers(newFlowers);
+    //     // console.log('FLOWERS RF', flowers);
+    //   }
     
-      const handleChange = (i, e) => {
-        let newFlowers = [...flowers];
-        newFlowers[i][e.target.name] = e.target.value;
-        setFlowers(newFlowers);
-        // console.log('FLOWERS QC', flowers);
-      }
+    //   const handleChange = (i, e) => {
+    //     let newFlowers = [...flowers];
+    //     newFlowers[i][e.target.name] = e.target.value;
+    //     setFlowers(newFlowers);
+    //     // console.log('FLOWERS QC', flowers);
+    //   }
     
     return (
         <div>
