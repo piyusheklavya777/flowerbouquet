@@ -28,14 +28,6 @@ export default () => {
 
     const onSubmit = async e => {
         e.preventDefault();
-        console.log('lol', {
-            name,
-            discount,
-            description,
-            flowers: _.map(flowers, f => {
-                return { flowerId: f.flowerId, quantity: f.quantity };
-            })
-        })
         await createBouquet();
     }
 
@@ -93,6 +85,7 @@ export default () => {
                       <tr>
                         <th>Name</th>
                         <th>Quantity</th>
+                        <th>Price per unit</th>
                         <th></th>
                       </tr>
                     </thead>
