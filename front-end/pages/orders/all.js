@@ -1,5 +1,5 @@
 import _ from "lodash";
-
+import OrderCancelBtn from "../../components/order/order-cancel-btn";
 const Orders = ({orders}) => {
 
     return (
@@ -43,8 +43,9 @@ const Orders = ({orders}) => {
                     return (
                         <div>
                             <hr/>
-                            <label>Order Id: {orderId} | </label>
-                            <label> Status: {status}</label>
+                            <label>Order Id: {orderId} </label>
+                            <h6> Status: {status}</h6>
+                            {status === 'created' && <OrderCancelBtn orderId={orderId}></OrderCancelBtn>}
                             <h3>Bouquets</h3>
                             {bouquets}
                         </div>
