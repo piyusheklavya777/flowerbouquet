@@ -1,10 +1,11 @@
 import _ from 'lodash';
-import { GenericInternalError, CustomError, standardHttpResponseInterface } from '../index';
+import { GenericInternalError, CustomError, standardHttpResponseInterface, logger } from '../index';
 
 export function handleError(e) {
   if (e instanceof CustomError) {
     throw e;
   }
+  logger.error('unhandled error', e);
   throw new GenericInternalError(e.message);
 }
 

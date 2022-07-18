@@ -39,7 +39,7 @@ const bouquetUpdateHttpRequestSchema = Joi.object({
   }),
   body: Joi.object({
     name: Joi.string().min(2).max(100),
-    discount: Joi.number(),
+    discount: Joi.number().min(0).max(100),
     description: Joi.string(),
     flowers: Joi.array()
       .items(

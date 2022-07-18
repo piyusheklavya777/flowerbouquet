@@ -6,11 +6,13 @@ import {
   handleErrorAndConvertToJSON,
   getCurrentUser,
   OrderStatus,
+  logger,
 } from '../../../common';
 import { createOrder } from '.';
 
 export async function createOrderHttpHandler({ standardRequestObject }): Promise<standardHttpResponseInterface> {
   try {
+    // logger.silly('INPUT', standardRequestObject);
     validateAgainstJoiSchema(standardRequestObject, orderCreateHttpRequestSchema);
 
     const { name: currentUserName, userId } = getCurrentUser(standardRequestObject.session);
@@ -46,9 +48,9 @@ const orderCreateHttpRequestSchema = Joi.object({
                 quantity: Joi.number().min(1).required(),
               }),
             )
-            .min(1),
+            .min(1).required(),
         }),
       )
-      .min(1),
-  }),
+      .min(1).required(),
+  }).required(),
 }).unknown();

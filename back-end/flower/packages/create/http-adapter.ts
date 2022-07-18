@@ -34,7 +34,7 @@ export async function createFlowerHttpHandler({ standardRequestObject }): Promis
 const flowerCreateHttpRequestSchema = Joi.object({
   body: Joi.object({
     name: Joi.string().min(2).max(100).required(),
-    price: Joi.number().required(),
+    price: Joi.number().min(1).max(1000).required(),
     quantityAvailable: Joi.number().min(1).required(),
     description: Joi.string().required(),
   }),

@@ -42,7 +42,7 @@ export async function createBouquetHttpHandler({ standardRequestObject }): Promi
 const bouquetCreateHttpRequestSchema = Joi.object({
   body: Joi.object({
     name: Joi.string().min(2).max(100).required(),
-    discount: Joi.number(),
+    discount: Joi.number().min(0).max(100),
     description: Joi.string().required(),
     flowers: Joi.array()
       .items(

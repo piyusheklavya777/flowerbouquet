@@ -37,7 +37,7 @@ export async function createOrder({ bouquets, status, customerId, customerName }
 
 async function _checkValidBouquets({ bouquets }) {
   const flowersUnique = {}; // { flowerId: { name: '', quantity: '', price: '' } }
-
+  // logger.silly('INPUT', bouquets);
   for (const { flowers } of bouquets) {
     for (const { flowerId, quantity } of flowers) {
       if (flowersUnique[flowerId]) {

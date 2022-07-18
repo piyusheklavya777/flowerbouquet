@@ -26,6 +26,8 @@ export async function getBouquets({ bouquetId, namePrefix, userId }) {
 
   const bouquetsWithoutProps = await Promise.all(
     _.map(bouquetObjects, async (bouquet) => {
+      bouquet.bouquetId = bouquet._id;
+      delete bouquet._id;
       if (bouquet.creatorId === userId) {
         bouquet.belongsToThisUser = true;
       }
