@@ -4,8 +4,14 @@ import { useState } from 'react';
 import useRequest from '../../hooks/use-request';
 import Router from 'next/router';
 
-const Flowers = ({ flowers }) => {
+const Flowers = (params) => {
     // edit logic
+  const flowers = _.get(params, 'flowers')
+    if (!flowers) {
+      return (
+        <h1>Service Unavailable. Please try in some time</h1>
+      )
+    }
     const [name, setName] = useState();
     const [price, setPrice] = useState();
     const [description, setDescription] = useState();
@@ -95,10 +101,12 @@ const Flowers = ({ flowers }) => {
         const flowerId = _.get(flower, 'flowerId');
         const price = _.get(flower, 'price');
         const belongsToThisUser = _.get(flower, 'belongsToThisUser');
+        const description = _.get(flower, 'description');
 
         return (
             <tr key={flowerId}>
               <td>{name}</td>
+              <td>{description}</td>
               <td>{quantityAvailable}</td>
               <td>{price}</td>
               <td>
@@ -107,7 +115,7 @@ const Flowers = ({ flowers }) => {
                   pathname: '/flower/singleview',
                   query: { flowerId },
                 }}
-              ><a>flower details</a></Link>
+              ><a>details</a></Link>
               </td>
               <td>
                 {!editFlower && belongsToThisUser && <button onClick={() => setEditFields({ flower })} className="btn btn-primary">
@@ -128,6 +136,7 @@ const Flowers = ({ flowers }) => {
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Description</th>
                         <th>Inventory</th>
                         <th>Price</th>
                         <th>Links</th>
